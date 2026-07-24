@@ -204,8 +204,6 @@ header p {
 
     font-size: 11px;
 
-    letter-spacing: .6px;
-
     color: #777;
 
     transition: .25s;
@@ -221,6 +219,8 @@ header p {
 .category-button.active {
 
     color: #111;
+
+    font-weight: 600;
 
 }
 
@@ -301,7 +301,37 @@ header p {
 
 }
 
+.product-image-wrapper{
 
+    position:relative;
+
+}
+
+.gone-badge{
+
+    position:absolute;
+
+    top:12px;
+
+    right:12px;
+
+    padding:5px 8px;
+
+    background:#111;
+
+    color:#fff;
+
+    font-size:10px;
+
+    letter-spacing:1px;
+
+}
+
+.product-card.gone img{
+
+    opacity:.45;
+
+}
 
 /* =======================================
    PRODUCT DETAIL
