@@ -1,0 +1,55 @@
+{
+    "id": "0000",
+
+    "name": "",
+
+    "price": 0,
+
+    "status": "available",
+
+    "category": "",
+
+    "country": "",
+
+    "size": "",
+
+    "description": "",
+
+    "notes": "",
+
+    "measurement": {
+
+        "shoulder": "",
+
+        "chest": "",
+
+        "length": "",
+
+        "sleeve": "",
+
+
+        "waist": "",
+
+        "rise": "",
+
+        "thigh": "",
+
+        "hem": "",
+
+        "inseam": "",
+
+
+        "width": "",
+
+        "height": "",
+
+        "depth": ""
+
+    },
+
+    "images": [
+
+        "main.jpg"
+
+    ]
+}

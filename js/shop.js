@@ -2,7 +2,8 @@ fetch("products.json")
     .then(response => response.json())
     .then(products => {
 
-        const productGrid = document.querySelector(".product-grid");
+        const availableGrid = document.getElementById("available-grid");
+        const goneGrid = document.getElementById("gone-grid");
         const categoryMenu = document.getElementById("category-menu");
 
         const categories = [
@@ -10,59 +11,55 @@ fetch("products.json")
             ...new Set(products.map(product => product.category))
         ];
 
-        // ==========================
-        // 상품 출력
-        // ==========================
+        function createCard(product) {
 
-        function renderProducts(productsToRender) {
+            return `
 
-            productGrid.innerHTML = "";
+            <a href="product.html?id=${product.id}"
+               class="product-card ${product.status === "gone" ? "gone" : ""}">
 
-            // AVAILABLE 먼저, GONE 나중
-            const sortedProducts = [...productsToRender].sort((a, b) => {
+                <div class="product-image-wrapper">
 
-                if (a.status === b.status) return 0;
+                    <img
+                        src="images/products/${product.id}/main.jpg"
+                        alt="${product.name}">
 
-                if (a.status === "available") return -1;
+                    ${product.status === "gone"
+                        ? `<div class="gone-badge">GONE</div>`
+                        : ""}
 
-                return 1;
+                </div>
 
-            });
+                <h3>${product.name}</h3>
 
-            sortedProducts.forEach(product => {
+                <p>₩ ${product.price.toLocaleString()}</p>
 
-                productGrid.innerHTML += `
+            </a>
 
-                    <a href="product.html?id=${product.id}"
-                       class="product-card ${product.status === "gone" ? "gone" : ""}">
-
-                        <div class="product-image-wrapper">
-
-                            <img
-                                src="images/products/${product.id}/main.jpg"
-                                alt="${product.name}">
-
-                            ${product.status === "gone"
-                                ? `<div class="gone-badge">GONE</div>`
-                                : ""}
-
-                        </div>
-
-                        <h3>${product.name}</h3>
-
-                        <p>₩ ${product.price.toLocaleString()}</p>
-
-                    </a>
-
-                `;
-
-            });
+            `;
 
         }
 
-        // ==========================
-        // 카테고리 버튼 생성
-        // ==========================
+        function renderProducts(productsToRender) {
+
+            availableGrid.innerHTML = "";
+            goneGrid.innerHTML = "";
+
+            const available =
+                productsToRender.filter(product => product.status === "available");
+
+            const gone =
+                productsToRender.filter(product => product.status === "gone");
+
+            available.forEach(product => {
+                availableGrid.innerHTML += createCard(product);
+            });
+
+            gone.forEach(product => {
+                goneGrid.innerHTML += createCard(product);
+            });
+
+        }
 
         categories.forEach(category => {
 
@@ -74,7 +71,8 @@ fetch("products.json")
                 ? products.length
                 : products.filter(product => product.category === category).length;
 
-            button.textContent = `${category.toUpperCase()} (${count})`;
+            button.textContent =
+                `${category.toUpperCase()} (${count})`;
 
             button.addEventListener("click", () => {
 
@@ -92,13 +90,13 @@ fetch("products.json")
 
                 } else {
 
-                    const filteredProducts = products.filter(product => {
+                    renderProducts(
 
-                        return product.category === category;
+                        products.filter(product =>
+                            product.category === category
+                        )
 
-                    });
-
-                    renderProducts(filteredProducts);
+                    );
 
                 }
 
@@ -108,13 +106,9 @@ fetch("products.json")
 
         });
 
-        const firstButton = document.querySelector(".category-button");
-
-        if (firstButton) {
-
-            firstButton.classList.add("active");
-
-        }
+        document
+            .querySelector(".category-button")
+            .classList.add("active");
 
         renderProducts(products);
 
