@@ -6,11 +6,8 @@ fetch("products.json")
         const categoryMenu = document.getElementById("category-menu");
 
         const categories = [
-
             "all",
-
             ...new Set(products.map(product => product.category))
-
         ];
 
         // ==========================
@@ -21,32 +18,43 @@ fetch("products.json")
 
             productGrid.innerHTML = "";
 
-            productsToRender.forEach(product => {
+            // AVAILABLE 먼저, GONE 나중
+            const sortedProducts = [...productsToRender].sort((a, b) => {
+
+                if (a.status === b.status) return 0;
+
+                if (a.status === "available") return -1;
+
+                return 1;
+
+            });
+
+            sortedProducts.forEach(product => {
 
                 productGrid.innerHTML += `
 
-            <a href="product.html?id=${product.id}"
-               class="product-card ${product.status === "gone" ? "gone" : ""}">
+                    <a href="product.html?id=${product.id}"
+                       class="product-card ${product.status === "gone" ? "gone" : ""}">
 
-                <div class="product-image-wrapper">
+                        <div class="product-image-wrapper">
 
-                    <img
-                        src="images/products/${product.id}/main.jpg"
-                        alt="${product.name}">
+                            <img
+                                src="images/products/${product.id}/main.jpg"
+                                alt="${product.name}">
 
-                    ${product.status === "gone"
-                        ? `<div class="gone-badge">GONE</div>`
-                        : ""}
+                            ${product.status === "gone"
+                                ? `<div class="gone-badge">GONE</div>`
+                                : ""}
 
-                </div>
+                        </div>
 
-                <h3>${product.name}</h3>
+                        <h3>${product.name}</h3>
 
-                <p>₩ ${product.price.toLocaleString()}</p>
+                        <p>₩ ${product.price.toLocaleString()}</p>
 
-            </a>
+                    </a>
 
-        `;
+                `;
 
             });
 
@@ -63,9 +71,7 @@ fetch("products.json")
             button.className = "category-button";
 
             const count = category === "all"
-
                 ? products.length
-
                 : products.filter(product => product.category === category).length;
 
             button.textContent = `${category.toUpperCase()} (${count})`;
@@ -101,7 +107,6 @@ fetch("products.json")
             categoryMenu.appendChild(button);
 
         });
-
 
         const firstButton = document.querySelector(".category-button");
 
