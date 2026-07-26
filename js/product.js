@@ -51,21 +51,28 @@ fetch("products.json")
 
             Object.entries(product.measurement).forEach(([key, value]) => {
 
+                // 값이 없으면 출력하지 않음
+                if (!value) return;
+
                 measurementList.innerHTML += `
 
-                    <div class="measurement-item">
+        <div class="measurement-item">
 
-                        <span class="measurement-label">
-                            ${labels[key]}
-                        </span>
+            <span class="measurement-label">
 
-                        <span class="measurement-value">
-                            ${value} cm
-                        </span>
+                ${labels[key]}
 
-                    </div>
+            </span>
 
-                `;
+            <span class="measurement-value">
+
+                ${value} cm
+
+            </span>
+
+        </div>
+
+    `;
 
             });
 
