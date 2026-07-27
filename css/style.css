@@ -257,11 +257,11 @@ header p {
 
 }
 
-.product-image-wrapper{
+.product-image-wrapper {
 
-    position:relative;
+    position: relative;
 
-    display:block;
+    display: block;
 
 }
 
@@ -303,29 +303,29 @@ header p {
 
 }
 
-.gone-badge{
+.gone-badge {
 
-    position:absolute;
+    position: absolute;
 
-    top:10px;
+    top: 10px;
 
-    right:10px;
+    right: 10px;
 
-    padding:6px 10px;
+    padding: 6px 10px;
 
-    background:#111;
+    background: #111;
 
-    color:#fff;
+    color: #fff;
 
-    font-size:10px;
+    font-size: 10px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    letter-spacing:1px;
+    letter-spacing: 1px;
 
-    text-transform:uppercase;
+    text-transform: uppercase;
 
-    z-index:20;
+    z-index: 20;
 
 }
 
@@ -333,31 +333,31 @@ header p {
    SHOP SECTION TITLE
 ======================================= */
 
-.section-title{
+.section-title {
 
-    grid-column:1 / -1;
+    grid-column: 1 / -1;
 
-    margin:40px 0 25px;
+    margin: 40px 0 25px;
 
-    padding-bottom:12px;
+    padding-bottom: 12px;
 
-    border-bottom:1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 
-    font-size:11px;
+    font-size: 11px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    letter-spacing:2px;
+    letter-spacing: 2px;
 
-    color:#111;
+    color: #111;
 
 }
 
-.section-title.archive{
+.section-title.archive {
 
-    margin-top:90px;
+    margin-top: 90px;
 
-    color:#777;
+    color: #777;
 
 }
 
@@ -474,15 +474,23 @@ header p {
 
     display: flex;
 
-    justify-content: flex-end;
+    justify-content: center;
+
+    align-items: flex-start;
 
 }
 
 .product-image img {
 
-    width: 100%;
+    width: auto;
 
-    max-width: 420px;
+    height: auto;
+
+    max-width: min(42vw, 520px);
+
+    max-height: 75vh;
+
+    object-fit: contain;
 
 }
 
@@ -585,6 +593,28 @@ header p {
     max-width: 500px;
 
     margin: 0 auto;
+
+}
+
+/* =======================================
+   PRODUCT NOTES
+======================================= */
+
+.product-notes {
+
+    margin-top: 30px;
+
+}
+
+.product-notes p {
+
+    font-size: 12px;
+
+    color: #444;
+
+    line-height: 1.9;
+
+    margin-bottom: 4px;
 
 }
 

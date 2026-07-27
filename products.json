@@ -44,5 +44,71 @@
         "images": [
             "main.jpg"
         ]
+    },
+    {
+        "id": "0004",
+        "name": "test item",
+        "price": 10,
+        "status": "available",
+        "category": "test",
+        "country": "test",
+        "size": "s",
+        "description": "this is a test item",
+        "notes": "noting",
+        "measurement": {
+            "shoulder": "",
+            "chest": "",
+            "length": "",
+            "sleeve": "",
+            "waist": "",
+            "rise": "",
+            "thigh": "",
+            "hem": "",
+            "inseam": "",
+            "width": "",
+            "height": "",
+            "depth": ""
+        },
+        "images": [
+            "main.jpg",
+            "01.jpg",
+            "02.jpg",
+            "03.jpg",
+            "04.jpg",
+            "05.jpg"
+        ]
+    },
+    {
+        "id": "0005",
+        "name": "200s clothing",
+        "price": 0,
+        "status": "available",
+        "category": "t-shirt",
+        "country": "made in isrand",
+        "size": "ax",
+        "description": "to infiniity and beyond",
+        "notes": "no\nnot yet",
+        "measurement": {
+            "shoulder": "02",
+            "chest": "02",
+            "length": "02",
+            "sleeve": "02",
+            "waist": "",
+            "rise": "",
+            "thigh": "",
+            "hem": "",
+            "inseam": "",
+            "width": "",
+            "height": "",
+            "depth": ""
+        },
+        "images": [
+            "main.jpg",
+            "01.jpg",
+            "02.jpg",
+            "03.jpg",
+            "04.jpg",
+            "05.jpg"
+        ]
     }
 ]

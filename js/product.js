@@ -19,6 +19,7 @@ fetch("products.json")
         const productSize = document.getElementById("product-size");
         const measurementList = document.getElementById("measurement-list");
         const productDescription = document.getElementById("product-description");
+        const productNotes = document.getElementById("product-notes");
         const mainImage = document.getElementById("main-image");
         const detailGallery = document.getElementById("detail-gallery");
 
@@ -26,6 +27,20 @@ fetch("products.json")
         productCountry.textContent = product.country;
         productSize.textContent = `Size ${product.size}`;
         productDescription.textContent = product.description;
+
+        if (product.notes) {
+
+            const notes = product.notes
+                .split("\n")
+                .filter(note => note.trim() !== "");
+
+            productNotes.innerHTML = notes.map(note => {
+
+                return `<p>• ${note}</p>`;
+
+            }).join("");
+
+        }
 
         mainImage.src = `images/products/${product.id}/main.jpg`;
         mainImage.alt = product.name;
@@ -36,16 +51,18 @@ fetch("products.json")
             chest: "가슴",
             length: "총장",
             sleeve: "소매",
+
             waist: "허리",
             rise: "밑위",
             thigh: "허벅지",
             hem: "밑단",
+            inseam: "인심",
+
             width: "가로",
             height: "세로",
             depth: "폭"
 
         };
-
         // 실측 정보 출력
         if (product.measurement) {
 
