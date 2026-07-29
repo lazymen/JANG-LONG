@@ -46,13 +46,19 @@ body {
    HEADER
 ======================================= */
 
-header{
+header {
     position: fixed;
     right: 25px;
     bottom: 25px;
     text-align: right;
 
     z-index: 9999;
+}
+
+.logo a {
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+
 }
 
 h1 {
@@ -79,7 +85,7 @@ header p {
    SIDEBAR
 ======================================= */
 
-.sidebar{
+.sidebar {
     position: fixed;
     left: 45px;
     top: 50%;
@@ -136,8 +142,8 @@ header p {
 }
 
 .slider-window {
-    width: 560px;
-    height: 400px;
+    width: 500px;
+    height: 340px;
     position: relative;
     overflow: hidden;
     background: #000;
@@ -187,12 +193,12 @@ header p {
 
 .slide-count {
     position: absolute;
-    left: 6px;
-    bottom: 6px;
+    left: 8px;
+    bottom: 8px;
     z-index: 20;
     letter-spacing: -0.3px;
     font-family: "Courier New", monospace;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 1px;
     color: rgba(255, 255, 255, .75);
 }
@@ -303,7 +309,7 @@ header p {
     transform: scale(1.015);
 
     transition: transform .35s ease,
-                opacity .35s ease;
+        opacity .35s ease;
 
 }
 
@@ -379,7 +385,7 @@ header p {
 
     padding-bottom: 12px;
 
-    border-bottom: 1px solid #ddd;
+    border-bottom: none;
 
     font-size: 11px;
 
@@ -539,7 +545,7 @@ header p {
     display: block;
 
     transition: transform .35s ease,
-                opacity .35s ease;
+        opacity .35s ease;
 
 }
 
