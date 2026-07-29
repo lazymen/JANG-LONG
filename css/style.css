@@ -187,12 +187,12 @@ header p {
 
 .slide-count {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
+    left: 6px;
+    bottom: 6px;
     z-index: 20;
     letter-spacing: -0.3px;
     font-family: "Courier New", monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 1px;
     color: rgba(255, 255, 255, .75);
 }
