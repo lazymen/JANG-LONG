@@ -58,14 +58,13 @@ header {
 .logo a {
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
-
 }
 
-.tagline{
+.tagline {
 
-    font-family:"SpecialElite";
+    font-family: "SpecialElite";
 
-    font-size:11px;
+    font-size: 11px;
 
 }
 
@@ -202,7 +201,7 @@ header p {
 
 .slide-count {
     position: absolute;
-    left: 7.5px;        
+    left: 7.5px;
     bottom: 7.5px;
     z-index: 20;
     letter-spacing: -0.3px;
@@ -699,7 +698,27 @@ header p {
 
 
 /* =======================================
-   RESPONSIVE
+   MOBILE
 ======================================= */
 
-@media (max-width:768px) {}
+@media (max-width:768px) {
+
+    .hero-slider {
+
+        justify-content: center;
+
+    }
+
+    .slider-window {
+
+        width: 90vw;
+
+        height: 62vw;
+
+        max-width: 500px;
+
+        max-height: 340px;
+
+    }
+
+}
