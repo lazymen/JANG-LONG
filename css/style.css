@@ -694,16 +694,20 @@ header p {
 ======================================= */
 
 
+/* ======================
+   DESKTOP (기본)
+====================== */
 
+.mobile-nav {
+
+    display: none;
+
+}
 
 
 /* =======================================
    MOBILE
 ======================================= */
-
-.mobile-nav{
-    display:none;
-}
 
 @media (max-width:768px) {
 
@@ -718,35 +722,39 @@ header p {
         max-height: 340px;
     }
 
-    .mobile-nav{
+    .mobile-nav {
 
-        display:block;
+        position: fixed;
 
-        position:fixed;
+        top: 20px;
 
-        top:20px;
+        left: 20px;
 
-        left:20px;
+        width: auto;
 
-        z-index:10000;
+        display: block;
+
+        text-align: left;
+
+        z-index: 10000;
 
     }
 
-    .mobile-menu-btn{
+    .mobile-menu-btn {
 
-        background:none;
+        background: none;
 
-        border:none;
+        border: none;
 
-        cursor:pointer;
+        cursor: pointer;
 
-        font-family:"SpecialElite", serif;
+        font-family: "SpecialElite", serif;
 
-        font-size:16px;
+        font-size: 16px;
 
-        color:#111;
+        color: #111;
 
-        padding:0;
+        padding: 0;
 
     }
 
