@@ -712,7 +712,9 @@ header p {
 @media (max-width:768px) {
 
     .hero-slider {
-        justify-content: center;
+
+        gap: 0;
+
     }
 
     .slider-window {
