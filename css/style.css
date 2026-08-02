@@ -701,23 +701,52 @@ header p {
    MOBILE
 ======================================= */
 
+.mobile-nav{
+    display:none;
+}
+
 @media (max-width:768px) {
 
     .hero-slider {
-
         justify-content: center;
-
     }
 
     .slider-window {
-
         width: 90vw;
-
         height: 62vw;
-
         max-width: 500px;
-
         max-height: 340px;
+    }
+
+    .mobile-nav{
+
+        display:block;
+
+        position:fixed;
+
+        top:20px;
+
+        left:20px;
+
+        z-index:10000;
+
+    }
+
+    .mobile-menu-btn{
+
+        background:none;
+
+        border:none;
+
+        cursor:pointer;
+
+        font-family:"SpecialElite", serif;
+
+        font-size:16px;
+
+        color:#111;
+
+        padding:0;
 
     }
 
