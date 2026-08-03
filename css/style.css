@@ -711,6 +711,16 @@ header p {
 
 @media (max-width:768px) {
 
+    .container {
+
+        height: 100dvh;
+
+        min-height: 100dvh;
+
+        overflow: hidden;
+
+    }
+
     .hero-slider {
 
         gap: 0;
