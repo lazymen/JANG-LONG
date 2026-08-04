@@ -49,3 +49,16 @@ prev.addEventListener("click",()=>{
     showSlide(current);
 
 });
+
+// ===============================
+// MOBILE MENU
+// ===============================
+
+const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+const sidebar = document.getElementById("mobile-sidebar");
+
+mobileMenuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+
+});
