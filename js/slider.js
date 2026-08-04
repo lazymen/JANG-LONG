@@ -3,30 +3,32 @@ const slides = document.querySelectorAll(".slide");
 const currentSlide = document.getElementById("current-slide");
 const totalSlide = document.getElementById("total-slide");
 
-totalSlide.textContent = String(slides.length).padStart(2,"0");
+totalSlide.textContent = String(slides.length).padStart(2, "0");
 
 const next = document.querySelector(".next");
 const prev = document.querySelector(".prev");
 
 let current = 0;
 
-function showSlide(index){
+let mobileHintHidden = false;
 
-    slides.forEach(slide=>{
+function showSlide(index) {
+
+    slides.forEach(slide => {
         slide.classList.remove("active");
     });
 
     slides[index].classList.add("active");
-currentSlide.textContent =
-    String(index + 1).padStart(2,"0");
-    
+    currentSlide.textContent =
+        String(index + 1).padStart(2, "0");
+
 }
 
-next.addEventListener("click",()=>{
+next.addEventListener("click", () => {
 
     current++;
 
-    if(current >= slides.length){
+    if (current >= slides.length) {
 
         current = 0;
 
@@ -34,13 +36,15 @@ next.addEventListener("click",()=>{
 
     showSlide(current);
 
+    hideMobileArrows();
+
 });
 
-prev.addEventListener("click",()=>{
+prev.addEventListener("click", () => {
 
     current--;
 
-    if(current < 0){
+    if (current < 0) {
 
         current = slides.length - 1;
 
@@ -48,17 +52,87 @@ prev.addEventListener("click",()=>{
 
     showSlide(current);
 
+    hideMobileArrows();
+
 });
 
 // ===============================
-// MOBILE MENU
+// MOBILE HORIZONTAL MENU
 // ===============================
 
 const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-const sidebar = document.getElementById("mobile-sidebar");
+const mobileMenuList = document.getElementById("mobile-menu-list");
 
 mobileMenuBtn.addEventListener("click", () => {
 
-    sidebar.classList.toggle("active");
+    mobileMenuList.classList.toggle("active");
 
 });
+
+// ===============================
+// MOBILE SWIPE
+// ===============================
+
+let startX = 0;
+
+const sliderWindow = document.querySelector(".slider-window");
+
+sliderWindow.addEventListener("touchstart",(e)=>{
+
+    startX = e.touches[0].clientX;
+
+});
+
+sliderWindow.addEventListener("touchend",(e)=>{
+
+    const endX = e.changedTouches[0].clientX;
+
+    const diff = startX - endX;
+
+    if(Math.abs(diff) < 40){
+
+        return;
+
+    }
+
+    if(diff > 0){
+
+        next.click();
+
+        hideMobileArrows();
+
+    }else{
+
+        prev.click();
+
+        hideMobileArrows();
+
+    }
+
+});
+
+function hideMobileArrows(){
+
+    if(window.innerWidth > 768){
+
+        return;
+
+    }
+
+    if(mobileHintHidden){
+
+        return;
+
+    }
+
+    mobileHintHidden = true;
+
+    document.querySelector(".prev").style.opacity = "0";
+
+    document.querySelector(".next").style.opacity = "0";
+
+    document.querySelector(".prev").style.pointerEvents = "none";
+
+    document.querySelector(".next").style.pointerEvents = "none";
+
+}
