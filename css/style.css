@@ -801,7 +801,31 @@ header p {
 
     .sidebar {
 
-        display: none;
+        display: flex;
+
+        position: fixed;
+
+        top: 0;
+
+        left: -220px;
+
+        width: 180px;
+
+        height: 100dvh;
+
+        background: #fff;
+
+        padding: 90px 30px;
+
+        transition: left .35s ease;
+
+        z-index: 9998;
+
+    }
+
+    .sidebar.active {
+
+        left: 0;
 
     }
 
