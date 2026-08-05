@@ -720,9 +720,8 @@ header p {
 
     }
 
-    .hide-mobile-arrows .prev {
-
-        left:8px;
+    .prev,
+    .next {
 
         position: absolute;
 
@@ -730,21 +729,30 @@ header p {
 
         transform: translateY(-50%);
 
-        z-index: 30;
+        font-size: 24px;
+
+        background: none;
+
+        border: none;
+
+        cursor: pointer;
+
+        color: #777;
+
+        z-index: 20;
 
     }
 
-    .hide-mobile-arrows .next {
+    .prev {
 
-        right:8px;
-        
-        position: absolute;
+        left: 1px;
 
-        top: 50%;
+    }
 
-        transform: translateY(-50%);
+    .next {
 
-        z-index: 30;
+        right: 1px;
+
     }
 
     .slide-count {
@@ -794,11 +802,19 @@ header p {
     }
 
     .slider-window {
+
         position: relative;
+
+        overflow: hidden;
+
         width: 90vw;
+
         height: 62vw;
+
         max-width: 500px;
+
         max-height: 340px;
+
     }
 
     .mobile-nav {
