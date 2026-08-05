@@ -720,13 +720,31 @@ header p {
 
     }
 
-    .prev,
-    .next {
+    .hide-mobile-arrows .prev {
 
-        font-size: 18px;
+        left:8px;
 
-        opacity: .25;
+        position: absolute;
 
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        z-index: 30;
+
+    }
+
+    .hide-mobile-arrows .next {
+
+        right:8px;
+        
+        position: absolute;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        z-index: 30;
     }
 
     .slide-count {
@@ -776,6 +794,7 @@ header p {
     }
 
     .slider-window {
+        position: relative;
         width: 90vw;
         height: 62vw;
         max-width: 500px;
@@ -850,15 +869,17 @@ header p {
 
         border: none;
 
+        padding: 0;
+
         cursor: pointer;
 
         font-family: "SpecialElite", serif;
 
-        font-size: 16px;
+        font-size: 14px;
+
+        letter-spacing: 1px;
 
         color: #111;
-
-        padding: 0;
 
     }
 

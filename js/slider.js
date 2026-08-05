@@ -77,31 +77,47 @@ let startX = 0;
 
 const sliderWindow = document.querySelector(".slider-window");
 
-sliderWindow.addEventListener("touchstart",(e)=>{
+const heroSlider = document.querySelector(".hero-slider");
+
+function hideMobileArrows() {
+
+    if (window.innerWidth > 768) return;
+
+    if (mobileHintHidden) return;
+
+    mobileHintHidden = true;
+
+    heroSlider.classList.add("hide-mobile-arrows");
+
+}
+
+sliderWindow.addEventListener("touchstart", (e) => {
 
     startX = e.touches[0].clientX;
 
 });
 
-sliderWindow.addEventListener("touchend",(e)=>{
+
+
+sliderWindow.addEventListener("touchend", (e) => {
 
     const endX = e.changedTouches[0].clientX;
 
     const diff = startX - endX;
 
-    if(Math.abs(diff) < 40){
+    if (Math.abs(diff) < 40) {
 
         return;
 
     }
 
-    if(diff > 0){
+    if (diff > 0) {
 
         next.click();
 
         hideMobileArrows();
 
-    }else{
+    } else {
 
         prev.click();
 
@@ -110,29 +126,3 @@ sliderWindow.addEventListener("touchend",(e)=>{
     }
 
 });
-
-function hideMobileArrows(){
-
-    if(window.innerWidth > 768){
-
-        return;
-
-    }
-
-    if(mobileHintHidden){
-
-        return;
-
-    }
-
-    mobileHintHidden = true;
-
-    document.querySelector(".prev").style.opacity = "0";
-
-    document.querySelector(".next").style.opacity = "0";
-
-    document.querySelector(".prev").style.pointerEvents = "none";
-
-    document.querySelector(".next").style.pointerEvents = "none";
-
-}
