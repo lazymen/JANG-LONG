@@ -77,9 +77,19 @@ let startX = 0;
 
 const sliderWindow = document.querySelector(".slider-window");
 
+sliderWindow.addEventListener("click", () => {
+
+    if (window.innerWidth > 768) return;
+
+    next.click();
+
+});
+
 const heroSlider = document.querySelector(".hero-slider");
 
 function hideMobileArrows() {
+
+    console.log("hideMobileArrows 실행");
 
     if (window.innerWidth > 768) return;
 
@@ -88,6 +98,8 @@ function hideMobileArrows() {
     mobileHintHidden = true;
 
     heroSlider.classList.add("hide-mobile-arrows");
+
+    console.log(heroSlider.className);
 
 }
 
@@ -102,27 +114,26 @@ sliderWindow.addEventListener("touchstart", (e) => {
 sliderWindow.addEventListener("touchend", (e) => {
 
     const endX = e.changedTouches[0].clientX;
-
     const diff = startX - endX;
 
-    if (Math.abs(diff) < 40) {
+    if (Math.abs(diff) < 40) return;
 
-        return;
-
-    }
+    hideMobileArrows();   // 먼저 숨김
 
     if (diff > 0) {
 
-        next.click();
+        current++;
 
-        hideMobileArrows();
+        if (current >= slides.length) current = 0;
 
     } else {
 
-        prev.click();
+        current--;
 
-        hideMobileArrows();
+        if (current < 0) current = slides.length - 1;
 
     }
+
+    showSlide(current);
 
 });

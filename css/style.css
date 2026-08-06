@@ -745,13 +745,24 @@ header p {
 
     .prev {
 
-        left: 1px;
+        left: 5px;
 
     }
 
     .next {
 
-        right: 1px;
+        right: 5px;
+
+    }
+
+    .hide-mobile-arrows .prev,
+    .hide-mobile-arrows .next {
+
+        opacity: 0;
+
+        pointer-events: none;
+
+        transition: opacity .3s ease;
 
     }
 
@@ -931,6 +942,30 @@ header p {
 
         left: 0;
 
+    }
+
+}
+
+@keyframes mobileArrowHint {
+
+    0% {
+        transform: translateY(-50%) translateX(0);
+    }
+
+    25% {
+        transform: translateY(-50%) translateX(-5px);
+    }
+
+    50% {
+        transform: translateY(-50%) translateX(0);
+    }
+
+    75% {
+        transform: translateY(-50%) translateX(5px);
+    }
+
+    100% {
+        transform: translateY(-50%) translateX(0);
     }
 
 }
