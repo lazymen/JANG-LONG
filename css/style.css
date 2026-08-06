@@ -419,11 +419,11 @@ header p {
 
 .product-detail {
 
-    max-width: 500px;
+    max-width: 1200px;
 
-    margin: 80px auto;
+    margin: 40px auto 120px;
 
-    padding: 0 20px;
+    padding: 0 40px;
 
 }
 
@@ -464,21 +464,6 @@ header p {
     color: #555;
 
     margin-bottom: 8px;
-
-}
-
-
-/* =======================================
-   PRODUCT DETAIL
-======================================= */
-
-.product-detail {
-
-    max-width: 1200px;
-
-    margin: 40px auto 120px;
-
-    padding: 0 40px;
 
 }
 
@@ -858,23 +843,22 @@ header p {
 
         white-space: nowrap;
 
+        max-width: 0;
+
         opacity: 0;
 
-        visibility: hidden;
+        overflow: hidden;
 
-        transform: translateX(-10px);
-
-        transition: .3s;
+        transition: max-width .35s ease,
+            opacity .25s ease;
 
     }
 
     .mobile-menu-list.active {
 
+        max-width: 300px;
+
         opacity: 1;
-
-        visibility: visible;
-
-        transform: translateX(0);
 
     }
 
