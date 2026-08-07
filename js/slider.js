@@ -57,19 +57,6 @@ prev.addEventListener("click", () => {
 });
 
 // ===============================
-// MOBILE HORIZONTAL MENU
-// ===============================
-
-const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-const mobileMenuList = document.getElementById("mobile-menu-list");
-
-mobileMenuBtn.addEventListener("click", () => {
-
-    mobileMenuList.classList.toggle("active");
-
-});
-
-// ===============================
 // MOBILE SWIPE
 // ===============================
 

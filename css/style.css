@@ -701,7 +701,33 @@ header p {
 
         height: 100%;
 
-        overflow: hidden;
+        overflow: auto;
+
+    }
+
+    body.shop-page {
+
+        height: auto;
+
+        overflow: auto;
+
+    }
+
+    body.shop-page .container {
+
+        height: auto;
+
+        min-height: 100vh;
+
+        overflow: visible;
+
+    }
+
+    body.shop-page .shop-page {
+
+        overflow: visible;
+
+        padding-bottom: 120px;
 
     }
 
@@ -764,16 +790,6 @@ header p {
     .home-main {
 
         height: 100dvh;
-
-        overflow: hidden;
-
-    }
-
-    .container {
-
-        height: 100dvh;
-
-        min-height: 100dvh;
 
         overflow: hidden;
 
@@ -891,6 +907,21 @@ header p {
         letter-spacing: 1px;
 
         color: #111;
+
+    }
+
+    .product-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 42px 18px;
+
+    }
+
+    .category-menu {
+
+        margin-top: 55px;
+        margin-bottom: 55px;
 
     }
 
