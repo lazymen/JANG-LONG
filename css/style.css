@@ -920,8 +920,51 @@ header p {
 
     .category-menu {
 
-        margin-top: 55px;
-        margin-bottom: 55px;
+        display: flex;
+
+        justify-content: flex-start;
+
+        gap: 22px;
+
+        margin: 40px 0 70px;
+
+        flex-wrap: nowrap;
+
+        overflow-x: auto;
+
+        overflow-y: hidden;
+
+        white-space: nowrap;
+
+        scrollbar-width: none;
+
+        -ms-overflow-style: none;
+
+    }
+
+    .category-menu::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+    .category-button {
+
+        background: none;
+
+        border: none;
+
+        cursor: pointer;
+
+        font-size: 11px;
+
+        color: #777;
+
+        transition: .25s;
+
+        flex-shrink: 0;
+
+        white-space: nowrap;
 
     }
 
