@@ -829,13 +829,35 @@ header p {
 
     }
 
-    .mobile-nav {
+    .mobile-shop-header {
 
         position: fixed;
 
-        top: 20px;
+        top: 0;
 
-        left: 20px;
+        left: 0;
+
+        width: 100%;
+
+        background: #fff;
+
+        z-index: 10000;
+
+        padding-top: 20px;
+
+        border-bottom: 1px solid #eee;
+
+        box-sizing: border-box;
+
+    }
+
+    .mobile-nav {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
 
         display: flex;
 
@@ -843,7 +865,13 @@ header p {
 
         gap: 18px;
 
-        z-index: 10000;
+        width: 100%;
+
+        padding: 0 20px 18px;
+
+        box-sizing: border-box;
+
+        z-index: auto;
 
     }
 
@@ -918,7 +946,29 @@ header p {
 
     }
 
+    .shop-page {
+
+        width: 100%;
+
+        max-width: 100%;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+
+        overflow-x: hidden;
+
+        padding-top: 105px;
+
+    }
+
     .category-menu {
+
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        box-sizing: border-box;
 
         display: flex;
 
@@ -926,7 +976,9 @@ header p {
 
         gap: 22px;
 
-        margin: 40px 0 70px;
+        margin: 0;
+
+        padding: 0 20px 18px;
 
         flex-wrap: nowrap;
 
