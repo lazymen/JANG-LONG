@@ -789,9 +789,15 @@ header p {
 
     .home-main {
 
-        height: 100dvh;
+        flex: 1;
+
+        min-height: 0;
 
         overflow: hidden;
+
+        display: flex;
+
+        align-items: center;
 
     }
 
@@ -843,11 +849,31 @@ header p {
 
         z-index: 10000;
 
-        padding-top: 20px;
+        padding-top: 0;
 
         border-bottom: 1px solid #eee;
 
         box-sizing: border-box;
+
+    }
+
+    /* =======================================
+   MOBILE HOME NAV
+======================================= */
+
+    body.home-page .mobile-nav {
+
+        position: fixed;
+
+        top: 20px;
+
+        left: 20px;
+
+        width: auto;
+
+        padding: 0;
+
+        z-index: 10000;
 
     }
 
@@ -867,7 +893,7 @@ header p {
 
         width: 100%;
 
-        padding: 0 20px 20px;
+        padding: 20px 20px;
 
         box-sizing: border-box;
 
@@ -965,7 +991,7 @@ header p {
 
         overflow-x: hidden;
 
-        padding-top: 140px;
+        padding-top: 50px;
 
     }
 
@@ -1024,6 +1050,32 @@ header p {
         flex-shrink: 0;
 
         white-space: nowrap;
+
+    }
+
+    .section-title {
+
+        grid-column: 1 / -1;
+
+        margin-top: 50px;
+        margin-bottom: 30px;
+
+        padding-left: 4px;
+        padding-right: 4px;
+
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+
+        color: #111;
+
+    }
+
+    .section-title.archive {
+
+        margin-top: 100px;
+
+        color: #777;
 
     }
 
