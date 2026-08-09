@@ -1115,11 +1115,17 @@ header p {
 
     }
 
-}
-
 /* =======================================
    MOBILE PRODUCT DETAIL
 ======================================= */
+
+body.product-page header {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    text-align: right;
+    z-index: 9999;
+}
 
 body.product-page .product-detail {
 
@@ -1127,7 +1133,7 @@ body.product-page .product-detail {
     max-width: 100%;
 
     margin: 0;
-    padding: 80px 20px 100px;
+    padding: 40px 20px 100px;
 
     box-sizing: border-box;
 
@@ -1234,6 +1240,8 @@ body.product-page .detail-gallery img {
     max-width: 500px;
 
     margin: 0 auto;
+
+}
 
 }
 
