@@ -110,5 +110,37 @@
             "04.jpg",
             "05.jpg"
         ]
+    },
+    {
+        "id": "0006",
+        "name": "nice day",
+        "price": 999,
+        "status": "available",
+        "category": "bottoms",
+        "country": "usa",
+        "size": "xl",
+        "description": "a nice day to wear this product.",
+        "notes": "nothing \ndon't worry\nbe happy",
+        "measurement": {
+            "shoulder": "",
+            "chest": "",
+            "length": "",
+            "sleeve": "",
+            "waist": "99",
+            "rise": "99",
+            "thigh": "99",
+            "hem": "99",
+            "inseam": "",
+            "width": "",
+            "height": "",
+            "depth": ""
+        },
+        "images": [
+            "main.jpg",
+            "0001.jpg",
+            "0002.jpg",
+            "0003.jpg"
+        ]
     }
+
 ]
