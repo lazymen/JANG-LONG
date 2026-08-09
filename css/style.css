@@ -1117,6 +1117,126 @@ header p {
 
 }
 
+/* =======================================
+   MOBILE PRODUCT DETAIL
+======================================= */
+
+body.product-page .product-detail {
+
+    width: 100%;
+    max-width: 100%;
+
+    margin: 0;
+    padding: 80px 20px 100px;
+
+    box-sizing: border-box;
+
+}
+
+body.product-page .back-button {
+
+    position: static;
+
+    display: block;
+
+    margin-bottom: 35px;
+
+    font-size: 11px;
+
+}
+
+body.product-page .product-hero {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 40px;
+
+    margin: 0;
+
+}
+
+body.product-page .product-image {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+body.product-page .product-image img {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    height: auto;
+
+    object-fit: contain;
+
+}
+
+body.product-page .product-info {
+
+    width: 100%;
+
+    padding: 0;
+
+}
+
+body.product-page .product-info h1 {
+
+    font-size: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+body.product-page .product-info p {
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+body.product-page .product-info hr {
+
+    margin: 30px 0;
+
+}
+
+body.product-page .measurement-list {
+
+    margin-top: 22px;
+
+}
+
+body.product-page .detail-gallery {
+
+    margin-top: 80px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 60px;
+
+}
+
+body.product-page .detail-gallery img {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    margin: 0 auto;
+
+}
+
 @keyframes mobileArrowHint {
 
     0% {
