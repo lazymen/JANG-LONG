@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SEARCH | JANG LONG</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="search-page">
+
+    <div class="container">
+
+        <header>
+
+            <h1 class="logo">
+                <a href="index.html">JANG LONG</a>
+            </h1>
+
+            <p class="tagline">
+                Living Killed The Dream
+            </p>
+
+        </header>
+
+        <main class="search-page-main">
+
+            <a href="javascript:history.back()" class="search-back">
+                ← BACK
+            </a>
+
+            <section class="search-area">
+
+                <form id="search-form">
+
+                    <input
+                        type="search"
+                        id="search-input"
+                        placeholder="SEARCH"
+                        autocomplete="off"
+                    >
+
+                    <button type="submit">
+                        SEARCH
+                    </button>
+
+                </form>
+
+            </section>
+
+            <div id="search-query" class="search-query"></div>
+
+            <div class="section-title">
+                AVAILABLE
+            </div>
+
+            <section id="available-grid" class="product-grid"></section>
+
+            <div class="section-title archive">
+                GONE.
+            </div>
+
+            <section id="gone-grid" class="product-grid"></section>
+
+            <p id="search-empty" class="search-empty">
+                NO PRODUCTS FOUND.
+            </p>
+
+        </main>
+
+    </div>
+
+    <script src="js/search.js"></script>
+
+</body>
+
+</html>
