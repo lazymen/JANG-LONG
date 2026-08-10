@@ -678,6 +678,203 @@ header p {
    FOOTER
 ======================================= */
 
+/* =======================================
+SEARCH
+======================================= */
+
+.search-form {
+
+    position: fixed;
+
+    top: 30px;
+    right: 40px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    z-index: 9999;
+
+}
+
+.search-form input {
+
+    width: 120px;
+
+    padding: 6px 0;
+
+    border: none;
+    border-bottom: 1px solid #999;
+
+    outline: none;
+
+    background: transparent;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 11px;
+
+}
+
+.search-form input::placeholder {
+
+    color: #777;
+
+}
+
+.search-form button {
+
+    border: none;
+
+    background: none;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 11px;
+
+    color: #111;
+
+}
+
+.search-form button:hover {
+
+    opacity: .45;
+
+}
+
+.search-query {
+
+    width: 100%;
+    max-width: 700px;
+
+    margin: 100px auto 0;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+}
+
+.search-empty {
+
+    text-align: center;
+
+    margin-top: 100px;
+
+    font-size: 11px;
+
+    color: #777;
+
+}
+
+/* =======================================
+SEARCH ENTRY
+======================================= */
+
+.search-entry {
+
+    position: fixed;
+
+    top: 25px;
+    right: 25px;
+
+    background: none;
+    border: none;
+
+    padding: 0;
+
+    font-family: "SpecialElite", serif;
+    font-size: 11px;
+    letter-spacing: .5px;
+
+    color: #111;
+
+    cursor: pointer;
+
+    z-index: 10001;
+}
+
+.search-entry:hover {
+
+    opacity: .45;
+
+}
+
+
+/* =======================================
+SEARCH PANEL
+======================================= */
+
+.search-panel {
+
+    position: fixed;
+
+    top: 48px;
+    right: 25px;
+
+    display: none;
+
+    z-index: 10001;
+}
+
+.search-panel.active {
+
+    display: block;
+}
+
+.search-form {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-form input {
+
+    width: 150px;
+
+    background: transparent;
+
+    border: none;
+    outline: none;
+
+    padding: 4px 0;
+
+    font-family: "SpecialElite", serif;
+    font-size: 11px;
+
+    color: #111;
+}
+
+.search-form input::placeholder {
+
+    color: #777;
+}
+
+.search-form button {
+
+    background: none;
+    border: none;
+
+    padding: 0;
+
+    font-family: "SpecialElite", serif;
+    font-size: 11px;
+
+    color: #111;
+
+    cursor: pointer;
+}
+
+.search-form button:hover {
+
+    opacity: .45;
+}
 
 /* ======================
    DESKTOP (기본)
@@ -858,6 +1055,49 @@ header p {
         box-sizing: border-box;
 
     }
+
+    .search-entry {
+
+        top: 20px;
+        right: 20px;
+
+        font-size: 11px;
+    }
+
+    .search-panel {
+
+        top: 43px;
+        right: 20px;
+    }
+
+    .search-form {
+
+        top: 20px;
+        right: 20px;
+
+    }
+
+    .search-form input {
+
+        width: 130px;
+    }
+
+    .search-form button {
+
+        font-size: 10px;
+
+    }
+
+    .search-query {
+
+        margin-top: 80px;
+
+        padding: 0 20px;
+
+        box-sizing: border-box;
+
+    }
+
 
     /* =======================================
    MOBILE HOME NAV
@@ -1115,133 +1355,133 @@ header p {
 
     }
 
-/* =======================================
+    /* =======================================
    MOBILE PRODUCT DETAIL
 ======================================= */
 
-body.product-page header {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    text-align: right;
-    z-index: 9999;
-}
+    body.product-page header {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        text-align: right;
+        z-index: 9999;
+    }
 
-body.product-page .product-detail {
+    body.product-page .product-detail {
 
-    width: 100%;
-    max-width: 100%;
+        width: 100%;
+        max-width: 100%;
 
-    margin: 0;
-    padding: 40px 20px 100px;
+        margin: 0;
+        padding: 40px 20px 100px;
 
-    box-sizing: border-box;
+        box-sizing: border-box;
 
-}
+    }
 
-body.product-page .back-button {
+    body.product-page .back-button {
 
-    position: static;
+        position: static;
 
-    display: block;
+        display: block;
 
-    margin-bottom: 35px;
+        margin-bottom: 35px;
 
-    font-size: 11px;
+        font-size: 11px;
 
-}
+    }
 
-body.product-page .product-hero {
+    body.product-page .product-hero {
 
-    display: flex;
+        display: flex;
 
-    flex-direction: column;
+        flex-direction: column;
 
-    gap: 40px;
+        gap: 40px;
 
-    margin: 0;
+        margin: 0;
 
-}
+    }
 
-body.product-page .product-image {
+    body.product-page .product-image {
 
-    width: 100%;
+        width: 100%;
 
-    display: flex;
+        display: flex;
 
-    justify-content: center;
+        justify-content: center;
 
-}
+    }
 
-body.product-page .product-image img {
+    body.product-page .product-image img {
 
-    width: 100%;
+        width: 100%;
 
-    max-width: 500px;
+        max-width: 500px;
 
-    height: auto;
+        height: auto;
 
-    object-fit: contain;
+        object-fit: contain;
 
-}
+    }
 
-body.product-page .product-info {
+    body.product-page .product-info {
 
-    width: 100%;
+        width: 100%;
 
-    padding: 0;
+        padding: 0;
 
-}
+    }
 
-body.product-page .product-info h1 {
+    body.product-page .product-info h1 {
 
-    font-size: 20px;
+        font-size: 20px;
 
-    margin-bottom: 20px;
+        margin-bottom: 20px;
 
-}
+    }
 
-body.product-page .product-info p {
+    body.product-page .product-info p {
 
-    font-size: 12px;
+        font-size: 12px;
 
-    line-height: 1.7;
+        line-height: 1.7;
 
-}
+    }
 
-body.product-page .product-info hr {
+    body.product-page .product-info hr {
 
-    margin: 30px 0;
+        margin: 30px 0;
 
-}
+    }
 
-body.product-page .measurement-list {
+    body.product-page .measurement-list {
 
-    margin-top: 22px;
+        margin-top: 22px;
 
-}
+    }
 
-body.product-page .detail-gallery {
+    body.product-page .detail-gallery {
 
-    margin-top: 80px;
+        margin-top: 80px;
 
-    display: flex;
+        display: flex;
 
-    flex-direction: column;
+        flex-direction: column;
 
-    gap: 60px;
+        gap: 60px;
 
-}
+    }
 
-body.product-page .detail-gallery img {
+    body.product-page .detail-gallery img {
 
-    width: 100%;
+        width: 100%;
 
-    max-width: 500px;
+        max-width: 500px;
 
-    margin: 0 auto;
+        margin: 0 auto;
 
-}
+    }
 
 }
 
