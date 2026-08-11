@@ -670,10 +670,6 @@ header p {
    ABOUT
 ======================================= */
 
-
-
-
-
 /* =======================================
    FOOTER
 ======================================= */
@@ -682,197 +678,127 @@ header p {
 SEARCH
 ======================================= */
 
-.search-form {
-
-    position: fixed;
-
-    top: 30px;
-    right: 40px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    z-index: 9999;
-
-}
-
-.search-form input {
-
-    width: 120px;
-
-    padding: 6px 0;
-
-    border: none;
-    border-bottom: 1px solid #999;
-
-    outline: none;
-
-    background: transparent;
-
-    font-family: "SpecialElite", serif;
-
-    font-size: 11px;
-
-}
-
-.search-form input::placeholder {
-
-    color: #777;
-
-}
-
-.search-form button {
-
-    border: none;
-
-    background: none;
-
-    padding: 0;
-
-    cursor: pointer;
-
-    font-family: "SpecialElite", serif;
-
-    font-size: 11px;
-
-    color: #111;
-
-}
-
-.search-form button:hover {
-
-    opacity: .45;
-
-}
-
-.search-query {
-
-    width: 100%;
-    max-width: 700px;
-
-    margin: 100px auto 0;
-
-    font-size: 11px;
-
-    letter-spacing: 2px;
-
-}
-
-.search-empty {
-
-    text-align: center;
-
-    margin-top: 100px;
-
-    font-size: 11px;
-
-    color: #777;
-
-}
-
-/* =======================================
-SEARCH ENTRY
-======================================= */
-
 .search-entry {
-
     position: fixed;
 
-    top: 25px;
-    right: 25px;
-
-    background: none;
-    border: none;
+    top: 20px;
+    right: 20px;
 
     padding: 0;
 
+    border: none;
+    background: none;
+
     font-family: "SpecialElite", serif;
-    font-size: 11px;
-    letter-spacing: .5px;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 1px;
 
     color: #111;
 
     cursor: pointer;
 
-    z-index: 10001;
+    z-index: 10002;
 }
 
 .search-entry:hover {
-
     opacity: .45;
-
 }
 
 
-/* =======================================
-SEARCH PANEL
-======================================= */
+/* 검색창 */
 
 .search-panel {
-
     position: fixed;
 
-    top: 48px;
-    right: 25px;
+    top: 38px;
+    right: 20px;
 
-    display: none;
+    width: 120px;
+    height: 0;
 
-    z-index: 10001;
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+        height .2s ease,
+        opacity .15s ease;
+
+    z-index: 10002;
 }
+
+
+/* 검색창 열림 */
 
 .search-panel.active {
-
-    display: block;
+    height: 20px;
+    opacity: 1;
 }
 
-.search-form {
+
+/* 검색 form */
+
+.search-panel .search-form {
+    position: static;
 
     display: flex;
+
     align-items: center;
-    gap: 8px;
+
+    width: 100%;
+    height: 18px;
+
+    gap: 5px;
 }
 
-.search-form input {
 
-    width: 150px;
+/* 입력창 */
+
+.search-panel .search-form input {
+    flex: 1;
+
+    width: auto;
+    min-width: 0;
+
+    height: 17px;
+
+    padding: 0;
+
+    border: none;
+    border-bottom: 1px solid #111;
+
+    outline: none;
 
     background: transparent;
 
-    border: none;
-    outline: none;
-
-    padding: 4px 0;
-
     font-family: "SpecialElite", serif;
-    font-size: 11px;
+    font-size: 9px;
 
     color: #111;
 }
 
-.search-form input::placeholder {
 
-    color: #777;
-}
+/* GO */
 
-.search-form button {
-
-    background: none;
-    border: none;
+.search-panel .search-form button {
+    flex: 0 0 auto;
 
     padding: 0;
 
+    border: none;
+    background: none;
+
     font-family: "SpecialElite", serif;
-    font-size: 11px;
+    font-size: 9px;
+    line-height: 1;
 
     color: #111;
 
     cursor: pointer;
 }
 
-.search-form button:hover {
-
+.search-panel .search-form button:hover {
     opacity: .45;
 }
 
@@ -1440,177 +1366,45 @@ SEARCH PANEL
 
     }
 
-    /* =======================================
-SEARCH
+/* =======================================
+MOBILE SEARCH
 ======================================= */
 
     .search-entry {
-
-        position: fixed;
-
-        top: 20px;
-        right: 20px;
-
-        padding: 0;
-
-        border: none;
-
-        background: none;
-
-        font-family: inherit;
-
-        font-size: 9px;
-
-        line-height: 1;
-
-        letter-spacing: 1px;
-
-        color: #111;
-
-        cursor: pointer;
-
-        z-index: 10001;
-
-    }
-
-    .search-panel {
-
-        position: fixed;
-
-        top: 43px;
-        right: 20px;
-
-        width: 150px;
-
-        height: 0;
-
-        overflow: hidden;
-
-        opacity: 0;
-
-        transition:
-            height .25s ease,
-            opacity .2s ease;
-
-        z-index: 10000;
-
-    }
-
-    .search-panel.active {
-
-        height: 24px;
-
-        opacity: 1;
-
-    }
-
-    .search-form {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 5px;
-
-        width: 100%;
-
-        height: 22px;
-
-    }
-
-    .search-form input {
-
-        flex: 1;
-
-        width: 0;
-
-        height: 18px;
-
-        padding: 0;
-
-        border: none;
-
-        border-bottom: 1px solid #111;
-
-        outline: none;
-
-        background: transparent;
-
-        font-family: inherit;
-
-        font-size: 9px;
-
-        color: #111;
-
-    }
-
-    .search-form button {
-
-        padding: 0;
-
-        border: none;
-
-        background: none;
-
-        font-family: inherit;
-
-        font-size: 9px;
-
-        line-height: 1;
-
-        color: #111;
-
-        cursor: pointer;
-
-    }
-
-    .search-entry {
-
         top: 7px;
         right: 20px;
 
         font-size: 8px;
-
     }
 
     .search-panel {
-
-        top: 27px;
+        top: 32.5px;
         right: 20px;
 
-        width: 125px;
-
+        width: 105px;
     }
 
     .search-panel.active {
-
-        height: 22px;
-
-    }
-
-    .search-form {
-
         height: 20px;
+    }
 
+    .search-panel .search-form {
+        height: 18px;
         gap: 4px;
-
     }
 
-    .search-form input {
-
-        height: 16px;
-
+    .search-panel .search-form input {
+        height: 15px;
         font-size: 8px;
-
     }
 
-    .search-form button {
-
+    .search-panel .search-form button {
         font-size: 8px;
-
     }
 
 }
+
+
 
 @keyframes mobileArrowHint {
 

@@ -11,6 +11,23 @@
 
 <body class="product-page">
 
+    <nav class="mobile-nav">
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            MENU
+        </button>
+
+        <div class="mobile-menu-list" id="mobile-menu-list">
+
+            <a href="index.html">HOME</a>
+            <a href="shop.html">SHOP</a>
+            <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">BLOG</a>
+            <a href="about.html">ABOUT</a>
+
+        </div>
+
+    </nav>
+
     <header>
 
         <h1 class="logo">
@@ -23,9 +40,21 @@
 
     </header>
 
-    <a href="search.html" class="search-entry">
+    <button type="button" class="search-entry" id="search-entry">
         SEARCH
-    </a>
+    </button>
+
+    <div class="search-panel" id="search-panel">
+
+        <form id="site-search-form" class="search-form">
+
+            <input type="search" id="site-search-input" autocomplete="off">
+
+            <button type="submit">GO</button>
+
+        </form>
+
+    </div>
 
     <main class="product-detail">
 
@@ -68,7 +97,9 @@
     </main>
 
     <script src="js/product.js"></script>
-
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/search-toggle.js"></script>
+    
 </body>
 
 </html>
