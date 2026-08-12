@@ -9,14 +9,17 @@ function createCard(product) {
 
     return `
 
-        <a href="product.html?id=${product.id}"
-           class="product-card ${product.status === "gone" ? "gone" : ""}">
+        <a
+            href="product.html?id=${product.id}"
+            class="product-card ${product.status === "gone" ? "gone" : ""}"
+        >
 
             <div class="product-image-wrapper">
 
                 <img
                     src="images/products/${product.id}/main.jpg"
-                    alt="${product.name}">
+                    alt="${product.name}"
+                >
 
                 ${product.status === "gone"
             ? `<div class="gone-badge">GONE</div>`
@@ -118,7 +121,6 @@ fetch("products.json")
     .then(response => response.json())
 
     .then(products => {
-
 
         const params = new URLSearchParams(
             window.location.search
