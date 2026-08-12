@@ -828,7 +828,8 @@ SEARCH
 
     }
 
-    body.shop-page .mobile-shop-header {
+    body.shop-page .mobile-shop-header,
+    body.search-page .mobile-shop-header {
         position: fixed;
         top: 0;
         left: 0;
@@ -1366,7 +1367,7 @@ SEARCH
 
     }
 
-/* =======================================
+    /* =======================================
 MOBILE SEARCH
 ======================================= */
 
@@ -1375,6 +1376,14 @@ MOBILE SEARCH
         right: 20px;
 
         font-size: 8px;
+    }
+
+    body.search-page .search-page-main {
+        padding-top: 50px;
+    }
+
+    body.search-page .back-button {
+        display: none;
     }
 
     .search-panel {
