@@ -26,39 +26,76 @@
 
         </header>
 
+
+        <!-- 전역 SEARCH -->
+
+        <button type="button" class="search-entry" id="search-entry">
+            SEARCH
+        </button>
+
+
+        <div class="search-panel" id="search-panel">
+
+            <form id="site-search-form" class="search-form">
+
+                <input type="search" id="site-search-input" autocomplete="off">
+
+                <button type="submit">GO</button>
+
+            </form>
+
+        </div>
+
+
+        <!-- 모바일 메뉴 -->
+
+        <nav class="mobile-nav">
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                MENU
+            </button>
+
+            <div class="mobile-menu-list" id="mobile-menu-list">
+
+                <a href="index.html">HOME</a>
+                <a href="shop.html">SHOP</a>
+
+                <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
+                    BLOG
+                </a>
+
+                <a href="about.html">ABOUT</a>
+
+            </div>
+
+        </nav>
+
+
         <main class="search-page-main">
 
             <a href="javascript:history.back()" class="search-back">
                 ← BACK
             </a>
 
-            <section class="search-area">
-
-                <form id="search-form" class="search-form">
-
-                    <input type="search" id="search-input" placeholder="SEARCH" autocomplete="off">
-
-                    <button type="submit">
-                        SEARCH
-                    </button>
-
-                </form>
-
-            </section>
 
             <div id="search-query" class="search-query"></div>
+
 
             <div class="section-title">
                 AVAILABLE
             </div>
 
-            <section id="available-grid" class="product-grid"></section>
+            <section id="available-grid" class="product-grid">
+            </section>
+
 
             <div class="section-title archive">
                 GONE.
             </div>
 
-            <section id="gone-grid" class="product-grid"></section>
+            <section id="gone-grid" class="product-grid">
+            </section>
+
 
             <p id="search-empty" class="search-empty">
                 NO PRODUCTS FOUND.
@@ -68,7 +105,10 @@
 
     </div>
 
+
     <script src="js/search.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/search-toggle.js"></script>
 
 </body>
 

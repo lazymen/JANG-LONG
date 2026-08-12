@@ -1,6 +1,3 @@
-const searchForm = document.getElementById("search-form");
-const searchInput = document.getElementById("search-input");
-
 const availableGrid = document.getElementById("available-grid");
 const goneGrid = document.getElementById("gone-grid");
 
@@ -130,9 +127,6 @@ fetch("products.json")
         const query = params.get("q") || "";
 
 
-        searchInput.value = query;
-
-
         if (query) {
 
             searchQuery.textContent =
@@ -148,30 +142,6 @@ fetch("products.json")
         renderProducts(
             searchProducts(products, query)
         );
-
-
-        searchForm.addEventListener("submit", event => {
-
-            event.preventDefault();
-
-
-            const newQuery =
-                searchInput.value.trim();
-
-
-            if (!newQuery) {
-
-                window.location.href = "search.html";
-
-                return;
-
-            }
-
-
-            window.location.href =
-                `search.html?q=${encodeURIComponent(newQuery)}`;
-
-        });
 
     })
 
