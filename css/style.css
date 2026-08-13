@@ -552,6 +552,20 @@ header p {
 
 }
 
+.product-title-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.product-title-row #product-price {
+    align-self: flex-end;
+    margin: -15px 0 25px;
+    color: #777;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 .product-info h1 {
 
     font-size: 22px;
@@ -686,7 +700,7 @@ body.search-page .search-empty {
     left: 50%;
 
     transform: translate(-50%, -50%);
-    
+
     margin: 0;
 
     font-family: "SpecialElite", serif;

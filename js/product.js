@@ -25,7 +25,7 @@ fetch("products.json")
         const detailGallery = document.getElementById("detail-gallery");
 
         productName.textContent = product.name;
-        productPrice.textContent = product.price;
+        productPrice.textContent = `₩ ${product.price.toLocaleString()}`;
         productCountry.textContent = product.country;
         productSize.textContent = `Size ${product.size}`;
         productDescription.textContent = product.description;
