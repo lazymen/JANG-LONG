@@ -4,6 +4,11 @@ const goneGrid = document.getElementById("gone-grid");
 const searchQuery = document.getElementById("search-query");
 const searchEmpty = document.getElementById("search-empty");
 
+const sectionTitles =
+    document.querySelectorAll(
+        "body.search-page .search-page-main .section-title"
+    );
+
 
 function createCard(product) {
 
@@ -66,12 +71,19 @@ function renderProducts(products) {
 
     });
 
-
     if (products.length === 0) {
+
+        sectionTitles.forEach(title => {
+            title.style.display = "none";
+        });
 
         searchEmpty.style.display = "block";
 
     } else {
+
+        sectionTitles.forEach(title => {
+            title.style.display = "";
+        });
 
         searchEmpty.style.display = "none";
 
