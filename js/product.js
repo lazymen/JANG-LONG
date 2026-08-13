@@ -15,6 +15,7 @@ fetch("products.json")
         }
 
         const productName = document.getElementById("product-name");
+        const productPrice = document.getElementById("product-price");
         const productCountry = document.getElementById("product-country");
         const productSize = document.getElementById("product-size");
         const measurementList = document.getElementById("measurement-list");
@@ -24,6 +25,7 @@ fetch("products.json")
         const detailGallery = document.getElementById("detail-gallery");
 
         productName.textContent = product.name;
+        productPrice.textContent = product.price;
         productCountry.textContent = product.country;
         productSize.textContent = `Size ${product.size}`;
         productDescription.textContent = product.description;
