@@ -91,9 +91,7 @@ function searchProducts(products, query) {
 }
 
 
-fetch("products.json")
-
-    .then(response => response.json())
+loadProducts()
 
     .then(products => {
 

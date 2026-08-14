@@ -1,11 +1,13 @@
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 
-fetch("products.json")
-    .then(response => response.json())
+loadProducts()
     .then(products => {
 
-        const product = products.find(item => item.id === productId);
+        const product = findProductById(
+            products,
+            productId
+        );
 
         if (!product) {
 

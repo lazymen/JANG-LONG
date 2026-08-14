@@ -1,5 +1,4 @@
-fetch("products.json")
-    .then(response => response.json())
+loadProducts()
     .then(products => {
 
         const availableGrid = document.getElementById("available-grid");
@@ -16,11 +15,8 @@ fetch("products.json")
             availableGrid.innerHTML = "";
             goneGrid.innerHTML = "";
 
-            const available =
-                productsToRender.filter(product => product.status === "available");
-
-            const gone =
-                productsToRender.filter(product => product.status === "gone");
+            const available = products.filter(isAvailable);
+            const gone = products.filter(isGone);
 
             available.forEach(product => {
                 availableGrid.innerHTML += createProductCard(product);

@@ -4,7 +4,7 @@ function createProductCard(product) {
 
         <a
             href="product.html?id=${product.id}"
-            class="product-card ${product.status === "gone" ? "gone" : ""}"
+            class="product-card ${isGone(product) ? "gone" : ""}"
         >
 
             <div class="product-image-wrapper">
@@ -14,7 +14,7 @@ function createProductCard(product) {
                     alt="${product.name}"
                 >
 
-                ${product.status === "gone"
+              ${isGone(product)
             ? `<div class="gone-badge">GONE</div>`
             : ""
         }

@@ -1,22 +1,22 @@
 {
-    "id": "0006",
-    "name": "nice day",
-    "price": 999,
+    "id": "0007",
+    "name": "muscle car",
+    "price": 777,
     "country": "usa",
     "status": "available",
-    "category": "bottoms",
-    "description": "a nice day to wear this product.",
-    "notes": "nothing",
+    "category": "tops",
+    "description": "a muscle car for those who love speed and power.",
+    "notes": "nothing \n special\n just a car",
 
     "measurement": {
 
-        "shoulder": "",
+        "shoulder": "99",
 
-        "chest": "",
+        "chest": "99",
 
-        "length": "",
+        "length": "99",
 
-        "sleeve": "",
+        "sleeve": "99",
 
 
         "waist": "99",
@@ -43,7 +43,10 @@
         "main.jpg",
         "0001.jpg",
         "0002.jpg",
-        "0003.jpg"
+        "0003.jpg",
+        "0004.jpg",
+        "0005.jpg",
+        "0006.jpg"
 
     ]
 }
