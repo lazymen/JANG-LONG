@@ -11,35 +11,6 @@ fetch("products.json")
             ...new Set(products.map(product => product.category))
         ];
 
-        function createCard(product) {
-
-            return `
-
-            <a href="product.html?id=${product.id}"
-               class="product-card ${product.status === "gone" ? "gone" : ""}">
-
-                <div class="product-image-wrapper">
-
-                    <img
-                        src="images/products/${product.id}/main.jpg"
-                        alt="${product.name}">
-
-                    ${product.status === "gone"
-                        ? `<div class="gone-badge">GONE</div>`
-                        : ""}
-
-                </div>
-
-                <h3>${product.name}</h3>
-
-                <p>₩ ${product.price.toLocaleString()}</p>
-
-            </a>
-
-            `;
-
-        }
-
         function renderProducts(productsToRender) {
 
             availableGrid.innerHTML = "";
@@ -52,11 +23,11 @@ fetch("products.json")
                 productsToRender.filter(product => product.status === "gone");
 
             available.forEach(product => {
-                availableGrid.innerHTML += createCard(product);
+                availableGrid.innerHTML += createProductCard(product);
             });
 
             gone.forEach(product => {
-                goneGrid.innerHTML += createCard(product);
+                goneGrid.innerHTML += createProductCard(product);
             });
 
         }

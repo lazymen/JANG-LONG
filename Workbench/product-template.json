@@ -1,20 +1,11 @@
 {
     "id": "0006",
-
     "name": "nice day",
-
     "price": 999,
-
-    "status": "available",
-
-    "category": "bottoms",
-
     "country": "usa",
-
-    "size": "xl",
-
+    "status": "available",
+    "category": "bottoms",
     "description": "a nice day to wear this product.",
-
     "notes": "nothing",
 
     "measurement": {

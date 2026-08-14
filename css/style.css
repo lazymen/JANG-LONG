@@ -204,7 +204,6 @@ header p {
     left: 7.5px;
     bottom: 7.5px;
     z-index: 20;
-    letter-spacing: -0.3px;
     font-family: "Courier New", monospace;
     font-size: 9px;
     letter-spacing: 1px;
@@ -424,20 +423,6 @@ header p {
     margin: 40px auto 120px;
 
     padding: 0 40px;
-
-}
-
-.back-button {
-
-    display: inline-block;
-
-    margin-bottom: 40px;
-
-    text-decoration: none;
-
-    color: #111;
-
-    font-size: 12px;
 
 }
 
@@ -898,7 +883,7 @@ body.search-page .search-query {
 
     }
 
-    body.shop-page .shop-page {
+    body.shop-page .shop-main {
 
         overflow: visible;
 
