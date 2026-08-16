@@ -11,28 +11,16 @@ const sectionTitles =
 
 function renderProducts(products) {
 
-    availableGrid.innerHTML = "";
-    goneGrid.innerHTML = "";
+    const available = products.filter(isAvailable);
+    const gone = products.filter(isGone);
 
-    const available = products.filter(
-        product => product.status === "available"
-    );
+    availableGrid.innerHTML = available
+        .map(createProductCard)
+        .join("");
 
-    const gone = products.filter(
-        product => product.status === "gone"
-    );
-
-
-    available.forEach(product => {
-
-        availableGrid.innerHTML += createProductCard(product);
-    });
-
-
-    gone.forEach(product => {
-
-        goneGrid.innerHTML += createProductCard(product);
-    });
+    goneGrid.innerHTML = gone
+        .map(createProductCard)
+        .join("");
 
     if (products.length === 0) {
 
@@ -49,9 +37,7 @@ function renderProducts(products) {
         });
 
         searchEmpty.style.display = "none";
-
     }
-
 }
 
 

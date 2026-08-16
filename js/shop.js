@@ -12,22 +12,17 @@ loadProducts()
 
         function renderProducts(productsToRender) {
 
-            availableGrid.innerHTML = "";
-            goneGrid.innerHTML = "";
-
             const available = productsToRender.filter(isAvailable);
             const gone = productsToRender.filter(isGone);
 
-            available.forEach(product => {
-                availableGrid.innerHTML += createProductCard(product);
-            });
+            availableGrid.innerHTML = available
+                .map(createProductCard)
+                .join("");
 
-            gone.forEach(product => {
-                goneGrid.innerHTML += createProductCard(product);
-            });
-
+            goneGrid.innerHTML = gone
+                .map(createProductCard)
+                .join("");
         }
-
         categories.forEach(category => {
 
             const button = document.createElement("button");

@@ -55,6 +55,13 @@ header {
     z-index: 9999;
 }
 
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+
 .logo a {
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
@@ -287,6 +294,9 @@ header p {
 
 }
 
+
+
+
 .product-image-wrapper {
 
     position: relative;
@@ -295,6 +305,16 @@ header p {
 
     overflow: hidden;
 
+}
+
+.product-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    transition:
+        transform .35s ease,
+        opacity .35s ease;
 }
 
 .product-card.gone img {
@@ -384,13 +404,6 @@ header p {
 
 }
 
-.logo {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -2px;
-    line-height: 1;
-}
-
 /* BACK */
 
 .back-button {
@@ -449,16 +462,6 @@ header p {
 
     object-fit: contain;
 
-}
-
-.product-card img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    display: block;
-    transition:
-        transform .35s ease,
-        opacity .35s ease;
 }
 
 /* 상품 정보 */
@@ -547,6 +550,19 @@ header p {
 
     line-height: 1.9;
 
+}
+
+/* 상품 NOTES */
+
+.product-notes {
+    margin-top: 30px;
+}
+
+.product-notes p {
+    font-size: 12px;
+    color: #444;
+    line-height: 1.9;
+    margin-bottom: 4px;
 }
 
 /* 상세사진 */
@@ -960,7 +976,8 @@ body.search-page .search-query {
     }
 
     body.shop-page .mobile-nav,
-    body.search-page .mobile-nav {
+    body.search-page .mobile-nav,
+    body.product-page .mobile-nav {
         position: relative;
         width: 100%;
         padding: 20px;
@@ -1182,14 +1199,6 @@ body.search-page .search-query {
    MOBILE PRODUCT DETAIL
 ======================================= */
 
-    body.product-page header {
-        position: fixed;
-        right: 25px;
-        bottom: 25px;
-        text-align: right;
-        z-index: 9999;
-    }
-
     body.product-page .product-detail {
 
         width: 100%;
@@ -1197,8 +1206,6 @@ body.search-page .search-query {
 
         margin: 0;
         padding: 40px 20px 100px;
-
-        box-sizing: border-box;
 
     }
 
@@ -1209,8 +1216,6 @@ body.search-page .search-query {
         display: block;
 
         margin-bottom: 35px;
-
-        font-size: 11px;
 
     }
 
@@ -1228,8 +1233,6 @@ body.search-page .search-query {
 
         width: 100%;
 
-        display: flex;
-
         justify-content: center;
 
     }
@@ -1239,10 +1242,6 @@ body.search-page .search-query {
         width: 100%;
 
         max-width: 500px;
-
-        height: auto;
-
-        object-fit: contain;
 
     }
 
@@ -1262,14 +1261,6 @@ body.search-page .search-query {
 
     }
 
-    body.product-page .product-info p {
-
-        font-size: 12px;
-
-        line-height: 1.7;
-
-    }
-
     body.product-page .product-info hr {
 
         margin: 30px 0;
@@ -1286,21 +1277,7 @@ body.search-page .search-query {
 
         margin-top: 80px;
 
-        display: flex;
-
-        flex-direction: column;
-
         gap: 60px;
-
-    }
-
-    body.product-page .detail-gallery img {
-
-        width: 100%;
-
-        max-width: 500px;
-
-        margin: 0 auto;
 
     }
 
