@@ -69,12 +69,8 @@ header {
 }
 
 h1 {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -2px;
-    line-height: 1;
+    margin: 0;
 }
-
 
 h1 a {
     text-decoration: none;
@@ -310,14 +306,8 @@ header p {
 }
 
 .product-card:hover img {
-
     opacity: .92;
-
     transform: scale(1.015);
-
-    transition: transform .35s ease,
-        opacity .35s ease;
-
 }
 
 .product-card h3 {
@@ -381,38 +371,6 @@ header p {
 }
 
 /* =======================================
-   SHOP SECTION TITLE
-======================================= */
-
-.section-title {
-
-    grid-column: 1 / -1;
-
-    margin: 40px 0 25px;
-
-    padding-bottom: 12px;
-
-    border-bottom: none;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    color: #111;
-
-}
-
-.section-title.archive {
-
-    margin-top: 90px;
-
-    color: #777;
-
-}
-
-/* =======================================
    PRODUCT DETAIL
 ======================================= */
 
@@ -426,30 +384,11 @@ header p {
 
 }
 
-.cover-image {
-
-    width: 100%;
-
-    margin-bottom: 40px;
-
-}
-
-.product-detail h1 {
-
-    font-size: 22px;
-
-    margin-bottom: 15px;
-
-}
-
-.product-meta {
-
-    font-size: 13px;
-
-    color: #555;
-
-    margin-bottom: 8px;
-
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -2px;
+    line-height: 1;
 }
 
 /* BACK */
@@ -513,18 +452,13 @@ header p {
 }
 
 .product-card img {
-
     width: 100%;
-
     aspect-ratio: 4 / 5;
-
     object-fit: cover;
-
     display: block;
-
-    transition: transform .35s ease,
+    transition:
+        transform .35s ease,
         opacity .35s ease;
-
 }
 
 /* 상품 정보 */
@@ -552,13 +486,9 @@ header p {
 }
 
 .product-info h1 {
-
     font-size: 22px;
-
     font-weight: 600;
-
-    margin-bottom: 25px;
-
+    line-height: 1.2;
 }
 
 .product-info p {
@@ -643,27 +573,40 @@ header p {
 
 }
 
+
+
 /* =======================================
-   PRODUCT NOTES
+   SHOP SECTION TITLE
 ======================================= */
 
-.product-notes {
+.section-title {
 
-    margin-top: 30px;
+    grid-column: 1 / -1;
+
+    margin: 40px 0 25px;
+
+    padding-bottom: 12px;
+
+    border-bottom: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #111;
 
 }
 
-.product-notes p {
+.section-title.archive {
 
-    font-size: 12px;
+    margin-top: 90px;
 
-    color: #444;
-
-    line-height: 1.9;
-
-    margin-bottom: 4px;
+    color: #777;
 
 }
+
 
 /* =======================================
    ABOUT
@@ -854,17 +797,6 @@ body.search-page .search-query {
 
     }
 
-    body.shop-page .mobile-shop-header,
-    body.search-page .mobile-shop-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: #fff;
-        z-index: 10000;
-        box-sizing: border-box;
-    }
-
     body.shop-page {
 
         height: auto;
@@ -1013,44 +945,25 @@ body.search-page .search-query {
    MOBILE HOME NAV
 ======================================= */
 
-    body.home-page .mobile-nav {
-
-        position: fixed;
-
-        top: 20px;
-
-        left: 20px;
-
-        width: auto;
-
-        padding: 0;
-
-        z-index: 10000;
-
+    .mobile-nav {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        box-sizing: border-box;
     }
 
-    .mobile-nav {
+    body.home-page .mobile-nav {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 0;
+    }
 
+    body.shop-page .mobile-nav,
+    body.search-page .mobile-nav {
         position: relative;
-
-        top: auto;
-
-        left: auto;
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 18px;
-
         width: 100%;
-
-        padding: 20px 20px;
-
-        box-sizing: border-box;
-
-        z-index: auto;
-
+        padding: 20px;
     }
 
     .mobile-menu-list {
@@ -1303,8 +1216,6 @@ body.search-page .search-query {
 
     body.product-page .product-hero {
 
-        display: flex;
-
         flex-direction: column;
 
         gap: 40px;
@@ -1443,32 +1354,6 @@ MOBILE SEARCH
 
     .search-panel .search-form button {
         font-size: 8px;
-    }
-
-}
-
-
-
-@keyframes mobileArrowHint {
-
-    0% {
-        transform: translateY(-50%) translateX(0);
-    }
-
-    25% {
-        transform: translateY(-50%) translateX(-5px);
-    }
-
-    50% {
-        transform: translateY(-50%) translateX(0);
-    }
-
-    75% {
-        transform: translateY(-50%) translateX(5px);
-    }
-
-    100% {
-        transform: translateY(-50%) translateX(0);
     }
 
 }

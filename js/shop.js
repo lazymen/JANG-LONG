@@ -15,8 +15,8 @@ loadProducts()
             availableGrid.innerHTML = "";
             goneGrid.innerHTML = "";
 
-            const available = products.filter(isAvailable);
-            const gone = products.filter(isGone);
+            const available = productsToRender.filter(isAvailable);
+            const gone = productsToRender.filter(isGone);
 
             available.forEach(product => {
                 availableGrid.innerHTML += createProductCard(product);
