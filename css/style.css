@@ -565,6 +565,44 @@ header p {
     margin-bottom: 4px;
 }
 
+.add-to-cart {
+
+    margin-top: 28px;
+
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    color: #111;
+
+    cursor: pointer;
+
+    transition: opacity .25s;
+
+}
+
+.add-to-cart:hover:not(:disabled) {
+
+    opacity: .45;
+
+}
+
+.add-to-cart:disabled {
+
+    color: #777;
+
+    cursor: default;
+
+}
+
 /* 상세사진 */
 
 .detail-gallery {
@@ -661,6 +699,288 @@ body.search-page .search-empty {
 
 body.search-page .search-query {
     margin-top: 70px;
+}
+
+/* CART + SEARCH */
+
+.utility-nav {
+
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    z-index: 10002;
+
+}
+
+.cart-entry {
+
+    color: #111;
+
+    text-decoration: none;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 10px;
+
+    line-height: 1;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+
+}
+
+.cart-entry:hover {
+
+    opacity: .45;
+
+}
+
+/* =======================================
+   CART
+======================================= */
+
+.cart-main {
+
+    width: 100%;
+    max-width: 700px;
+
+    margin: 80px auto 120px;
+
+    padding: 0 20px;
+
+}
+
+.cart-title {
+
+    margin-bottom: 40px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+}
+
+
+.cart-list {
+
+    width: 100%;
+
+}
+
+
+.cart-item {
+
+    display: grid;
+
+    grid-template-columns: 120px 1fr;
+
+    gap: 30px;
+
+    padding: 30px 0;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+
+.cart-item-image {
+
+    display: block;
+
+    width: 100%;
+
+}
+
+
+.cart-item-image img {
+
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+
+}
+
+
+.cart-item-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+}
+
+
+.cart-item-name {
+
+    color: #111;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+}
+
+
+.cart-item-price {
+
+    margin-top: 8px;
+
+    font-size: 11px;
+
+    color: #777;
+
+}
+
+
+.cart-item-status {
+
+    margin-top: 12px;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    color: #777;
+
+}
+
+
+.cart-item.gone .cart-item-image {
+
+    opacity: .45;
+
+    filter: grayscale(100%);
+
+}
+
+
+.cart-remove {
+
+    margin-top: auto;
+
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    color: #777;
+
+    cursor: pointer;
+
+}
+
+
+.cart-remove:hover {
+
+    color: #111;
+
+}
+
+
+.cart-summary {
+
+    margin-top: 50px;
+
+}
+
+
+.cart-total {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #111;
+
+    font-size: 12px;
+
+}
+
+
+.checkout-button {
+
+    display: block;
+
+    margin-top: 35px;
+    margin-left: auto;
+
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    font-family: "SpecialElite", serif;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    color: #111;
+
+    cursor: pointer;
+
+}
+
+
+.checkout-button:disabled {
+
+    color: #aaa;
+
+    cursor: default;
+
+}
+
+
+.cart-empty {
+
+    display: none;
+
+    margin-top: 100px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* utility-nav 안의 SEARCH는
+   기존 fixed 위치 대신 wrapper가 위치를 담당 */
+
+.utility-nav .search-entry {
+
+    position: static;
+
 }
 
 .search-entry {
@@ -977,7 +1297,8 @@ body.search-page .search-query {
 
     body.shop-page .mobile-nav,
     body.search-page .mobile-nav,
-    body.product-page .mobile-nav {
+    body.product-page .mobile-nav,
+    body.cart-page .mobile-nav {
         position: relative;
         width: 100%;
         padding: 20px;
@@ -1278,6 +1599,73 @@ body.search-page .search-query {
         margin-top: 80px;
 
         gap: 60px;
+
+    }
+
+    .utility-nav {
+
+        top: 7px;
+
+        right: 20px;
+
+        gap: 10px;
+
+    }
+
+    .cart-entry {
+
+        font-size: 8px;
+
+    }
+
+    /* =======================================
+   MOBILE CART
+======================================= */
+
+    .cart-main {
+
+        margin: 70px auto 100px;
+
+        padding: 0 16px;
+
+    }
+
+
+    .cart-title {
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .cart-item {
+
+        grid-template-columns: 90px minmax(0, 1fr);
+
+        gap: 18px;
+
+        padding: 24px 0;
+
+    }
+
+
+    .cart-item-name {
+
+        font-size: 12px;
+
+    }
+
+
+    .cart-item-price {
+
+        font-size: 10px;
+
+    }
+
+
+    .cart-summary {
+
+        margin-top: 35px;
 
     }
 

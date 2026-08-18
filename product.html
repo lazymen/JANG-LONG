@@ -40,9 +40,17 @@
 
     </header>
 
-    <button type="button" class="search-entry" id="search-entry">
-        SEARCH
-    </button>
+    <div class="utility-nav">
+
+        <a href="cart.html" class="cart-entry">
+            CART (<span id="cart-count">0</span>)
+        </a>
+
+        <button type="button" class="search-entry" id="search-entry">
+            SEARCH
+        </button>
+
+    </div>
 
     <div class="search-panel" id="search-panel">
 
@@ -91,6 +99,10 @@
 
                 <div id="product-notes" class="product-notes"></div>
 
+                <button type="button" class="add-to-cart" id="add-to-cart">
+                    ADD TO CART
+                </button>
+
             </div>
 
         </section>
@@ -101,7 +113,12 @@
 
     </main>
 
+    <script src="js/product-status.js"></script>
     <script src="js/products-data.js"></script>
+
+    <script src="js/cart-store.js"></script>
+    <script src="js/cart-ui.js"></script>
+
     <script src="js/product.js"></script>
     <script src="js/mobile-menu.js"></script>
     <script src="js/search-toggle.js"></script>

@@ -25,6 +25,7 @@ loadProducts()
         const productNotes = document.getElementById("product-notes");
         const mainImage = document.getElementById("main-image");
         const detailGallery = document.getElementById("detail-gallery");
+        const addToCartButton = document.getElementById("add-to-cart");
 
         productName.textContent = product.name;
         productPrice.textContent = `₩ ${product.price.toLocaleString()}`;
@@ -48,6 +49,50 @@ loadProducts()
 
         mainImage.src = `images/products/${product.id}/main.jpg`;
         mainImage.alt = product.name;
+        function updateAddToCartButton() {
+
+            if (isGone(product)) {
+
+                addToCartButton.textContent = "GONE";
+                addToCartButton.disabled = true;
+
+                return;
+            }
+
+            if (isInCart(product.id)) {
+
+                addToCartButton.textContent = "IN CART";
+                addToCartButton.disabled = true;
+
+                return;
+            }
+
+            addToCartButton.textContent = "ADD TO CART";
+            addToCartButton.disabled = false;
+
+        }
+
+
+        addToCartButton.addEventListener("click", () => {
+
+            if (!isAvailable(product)) {
+                return;
+            }
+
+            const added =
+                addToCart(product.id);
+
+            if (!added) {
+                return;
+            }
+
+            updateAddToCartButton();
+            updateCartCount();
+
+        });
+
+
+        updateAddToCartButton();
 
         const labels = {
 
