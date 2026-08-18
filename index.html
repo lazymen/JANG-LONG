@@ -24,12 +24,19 @@
 
         </header>
 
-        <button type="button" class="search-entry" id="search-entry">
-            SEARCH
-        </button>
+        <div class="utility-nav">
+
+            <a href="cart.html" class="cart-entry">
+                CART (<span id="cart-count">0</span>)
+            </a>
+
+            <button type="button" class="search-entry" id="search-entry">
+                SEARCH
+            </button>
+
+        </div>
 
         <div class="search-panel" id="search-panel">
-
             <form id="site-search-form" class="search-form">
 
                 <input type="search" id="site-search-input" placeholder="SEARCH" autocomplete="off">
@@ -103,6 +110,9 @@
         </main>
 
     </div>
+
+    <script src="js/cart-store.js"></script>
+    <script src="js/cart-ui.js"></script>
 
     <script src="js/slider.js"></script>
     <script src="js/mobile-menu.js"></script>
