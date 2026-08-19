@@ -115,10 +115,11 @@
         "id": "0006",
         "name": "nice day",
         "price": 10000,
+        "size": "XL",
+        "country": "Made in USA",
+        "era": "",
         "status": "available",
         "category": "bottoms",
-        "country": "usa",
-        "size": "xl",
         "description": "a nice day to wear this product.",
         "notes": "nothing \ndon't worry\nbe happy",
         "measurement": {
@@ -137,9 +138,9 @@
         },
         "images": [
             "main.jpg",
-            "0001.jpg",
-            "0002.jpg",
-            "0003.jpg"
+            "01.jpg",
+            "02.jpg",
+            "03.jpg"
         ]
     },
     {

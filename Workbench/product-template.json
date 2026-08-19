@@ -1,24 +1,24 @@
 {
-    "id": "0007",
-    "name": "muscle car",
-    "price": 777,
+    "id": "0008",
+    "name": "gerry beckley",
+    "price": 1952,
     "size": "L",
-    "country": "made in usa",
+    "country": "made in uk",
     "era": "",
     "status": "available",
-    "category": "tops",
-    "description": "a muscle car for those who love speed and power.",
-    "notes": "nothing \n special\n just a car",
+    "category": "outerwear",
+    "description": "cool guy.",
+    "notes": "americana \n band",
 
     "measurement": {
 
-        "shoulder": "99",
+        "shoulder": "",
 
-        "chest": "99",
+        "chest": "",
 
-        "length": "99",
+        "length": "",
 
-        "sleeve": "99",
+        "sleeve": "",
 
 
         "waist": "99",

@@ -1,4 +1,4 @@
-const JANG_LONG_SUPABASE_URL = "https://fdjzdjeqclkcssxrwnrk.supabase.co";
+const JANG_LONG_SUPABASE_URL = "https://fdjzdjeqclkcssxrwnrk.supabase.co"; 
 const JANG_LONG_SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_w5vIvrXR3KjqHkOgzxdhhQ__W9xst6O";
 
