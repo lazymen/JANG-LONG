@@ -12,22 +12,22 @@
 
     "measurement": {
 
-        "shoulder": "",
+        "shoulder": "99",
 
-        "chest": "",
+        "chest": "99",
 
-        "length": "",
+        "length": "99",
 
-        "sleeve": "",
+        "sleeve": "99",
 
 
-        "waist": "99",
+        "waist": "",
 
-        "rise": "99",
+        "rise": "",
 
-        "thigh": "99",
+        "thigh": "",
 
-        "hem": "99",
+        "hem": "",    
 
         "inseam": "",
 
@@ -47,8 +47,7 @@
         "02.jpg",
         "03.jpg",
         "04.jpg",
-        "05.jpg",
-        "06.jpg"
+        "05.jpg"
 
     ]
 }
