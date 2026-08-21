@@ -16,7 +16,9 @@ const checkoutButton =
 
 function renderCart(products) {
 
-    const cartIds = getCart();
+    const cartIds = removeMissingProductsFromCart(products);
+
+    updateCartCount();
 
 
     const cartProducts = cartIds
@@ -146,7 +148,7 @@ function renderCart(products) {
 }
 
 
-loadProducts()
+loadProductsByIds(getCart())
 
     .then(products => {
 

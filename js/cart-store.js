@@ -35,6 +35,27 @@ function saveCart(cart) {
 }
 
 
+function removeMissingProductsFromCart(products) {
+
+    const productIds = new Set(
+        products.map(product => product.id)
+    );
+
+    const cart = getCart();
+
+    const validCart = cart.filter(
+        productId => productIds.has(productId)
+    );
+
+    if (validCart.length !== cart.length) {
+        saveCart(validCart);
+    }
+
+    return validCart;
+
+}
+
+
 function addToCart(productId) {
 
     const cart = getCart();
