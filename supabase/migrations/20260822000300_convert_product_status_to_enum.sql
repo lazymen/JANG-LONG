@@ -7,6 +7,7 @@ create type public.product_status as enum (
     'available',
     'reserved',
     'gone'
+    
 );
 
 alter table public.products
