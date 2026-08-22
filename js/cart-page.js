@@ -10,8 +10,27 @@ const cartSummary =
 const cartTotal =
     document.getElementById("cart-total");
 
+const cartCheckoutMessage =
+    document.getElementById("cart-checkout-message");
+
 const checkoutButton =
     document.getElementById("checkout-button");
+
+
+function escapeCartHtml(value) {
+
+    return String(value).replace(
+        /[&<>"']/g,
+        character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#039;"
+        })[character]
+    );
+
+}
 
 
 function renderCart(products) {
@@ -34,6 +53,7 @@ function renderCart(products) {
 
         cartEmpty.style.display = "block";
         cartSummary.style.display = "none";
+        cartCheckoutMessage.hidden = true;
 
         return;
     }
@@ -47,11 +67,21 @@ function renderCart(products) {
         .map(product => {
 
             const gone = isGone(product);
+            const reserved = product.status === "reserved";
+
+            const safeProductName =
+                escapeCartHtml(product.name);
+
+            const statusLabel = gone
+                ? "GONE"
+                : reserved
+                    ? "RESERVED"
+                    : "";
 
             return `
 
                 <article
-                    class="cart-item ${gone ? "gone" : ""}"
+                    class="cart-item ${gone ? "gone" : ""} ${reserved ? "reserved" : ""}"
                 >
 
                     <a
@@ -61,7 +91,7 @@ function renderCart(products) {
 
                         <img
                             src="images/products/${product.id}/main.jpg"
-                            alt="${product.name}"
+                            alt="${safeProductName}"
                         >
 
                     </a>
@@ -73,15 +103,15 @@ function renderCart(products) {
                             href="product.html?id=${product.id}"
                             class="cart-item-name"
                         >
-                            ${product.name}
+                            ${safeProductName}
                         </a>
 
                         <p class="cart-item-price">
                             ₩ ${product.price.toLocaleString()}
                         </p>
 
-                        ${gone
-                    ? `<p class="cart-item-status">GONE</p>`
+                        ${statusLabel
+                    ? `<p class="cart-item-status">${statusLabel}</p>`
                     : ""
                 }
 
@@ -106,6 +136,9 @@ function renderCart(products) {
     const availableProducts =
         cartProducts.filter(isAvailable);
 
+    const hasUnavailableProducts =
+        availableProducts.length !== cartProducts.length;
+
 
     const total = availableProducts
         .reduce(
@@ -120,7 +153,11 @@ function renderCart(products) {
 
 
     checkoutButton.disabled =
-        availableProducts.length === 0;
+        availableProducts.length === 0 ||
+        hasUnavailableProducts;
+
+    cartCheckoutMessage.hidden =
+        !hasUnavailableProducts;
 
 
     document
@@ -146,6 +183,18 @@ function renderCart(products) {
         });
 
 }
+
+
+checkoutButton.addEventListener(
+    "click",
+    () => {
+
+        if (!checkoutButton.disabled) {
+            window.location.href = "checkout.html";
+        }
+
+    }
+);
 
 
 loadProductsByIds(getCart())

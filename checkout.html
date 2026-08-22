@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CHECKOUT | JANG LONG</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="checkout-page">
+
+    <div class="container">
+
+        <header>
+
+            <h1 class="logo">
+                <a href="index.html">JANG LONG</a>
+            </h1>
+
+            <p class="tagline">
+                Living Killed The Dream
+            </p>
+
+        </header>
+
+
+        <div class="utility-nav">
+
+            <a href="cart.html" class="cart-entry">
+                CART (<span id="cart-count">0</span>)
+            </a>
+
+            <button type="button" class="search-entry" id="search-entry">
+                SEARCH
+            </button>
+
+        </div>
+
+
+        <div class="search-panel" id="search-panel">
+
+            <form id="site-search-form" class="search-form">
+
+                <input type="search" id="site-search-input" autocomplete="off">
+
+                <button type="submit">
+                    GO
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                MENU
+            </button>
+
+            <div class="mobile-menu-list" id="mobile-menu-list">
+
+                <a href="index.html">HOME</a>
+                <a href="shop.html">SHOP</a>
+
+                <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
+                    BLOG
+                </a>
+
+                <a href="about.html">
+                    ABOUT
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <nav class="sidebar">
+
+            <a href="index.html">HOME</a>
+            <a href="shop.html">SHOP</a>
+
+            <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
+                BLOG
+            </a>
+
+            <a href="about.html">ABOUT</a>
+
+        </nav>
+
+
+        <main class="checkout-main">
+
+            <h2 class="checkout-title">
+                CHECKOUT
+            </h2>
+
+
+            <p id="checkout-loading" class="checkout-loading">
+                LOADING ORDER...
+            </p>
+
+
+            <p id="checkout-error" class="checkout-error" hidden>
+                주문 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
+            </p>
+
+
+            <div id="checkout-empty" class="checkout-empty" hidden>
+
+                <p>YOUR CART IS EMPTY.</p>
+
+                <a href="shop.html">RETURN TO SHOP</a>
+
+            </div>
+
+
+            <div id="checkout-content" class="checkout-content" hidden>
+
+                <div class="checkout-layout">
+
+                    <section class="checkout-customer-section">
+
+                        <form id="checkout-form" class="checkout-form" method="post">
+
+                            <section class="checkout-form-group">
+
+                                <h3>CONTACT</h3>
+
+                                <div class="checkout-field-grid">
+
+                                    <label class="checkout-field checkout-field-wide" for="checkout-name">
+                                        <span>NAME *</span>
+                                        <input id="checkout-name" name="customerName" type="text"
+                                            autocomplete="name" maxlength="80" required>
+                                    </label>
+
+                                    <label class="checkout-field" for="checkout-phone">
+                                        <span>PHONE *</span>
+                                        <input id="checkout-phone" name="customerPhone" type="tel"
+                                            autocomplete="tel" inputmode="tel" maxlength="20" required>
+                                    </label>
+
+                                    <label class="checkout-field" for="checkout-email">
+                                        <span>EMAIL *</span>
+                                        <input id="checkout-email" name="customerEmail" type="email"
+                                            autocomplete="email" maxlength="120" required>
+                                    </label>
+
+                                </div>
+
+                            </section>
+
+
+                            <section class="checkout-form-group">
+
+                                <h3>SHIPPING ADDRESS</h3>
+
+                                <div class="checkout-field-grid">
+
+                                    <label class="checkout-field" for="checkout-postal-code">
+                                        <span>POSTAL CODE *</span>
+                                        <input id="checkout-postal-code" name="postalCode" type="text"
+                                            autocomplete="postal-code" inputmode="numeric" maxlength="20" required>
+                                    </label>
+
+                                    <label class="checkout-field checkout-field-wide" for="checkout-address-line1">
+                                        <span>ADDRESS *</span>
+                                        <input id="checkout-address-line1" name="addressLine1" type="text"
+                                            autocomplete="address-line1" maxlength="160" required>
+                                    </label>
+
+                                    <label class="checkout-field checkout-field-wide" for="checkout-address-line2">
+                                        <span>DETAIL ADDRESS</span>
+                                        <input id="checkout-address-line2" name="addressLine2" type="text"
+                                            autocomplete="address-line2" maxlength="160">
+                                    </label>
+
+                                    <label class="checkout-field checkout-field-wide" for="checkout-delivery-note">
+                                        <span>DELIVERY NOTE</span>
+                                        <textarea id="checkout-delivery-note" name="deliveryNote" rows="3"
+                                            maxlength="300"></textarea>
+                                    </label>
+
+                                </div>
+
+                            </section>
+
+
+                            <p id="checkout-status-message" class="checkout-status-message" hidden>
+                                현재 선택하신 상품 중 구매할 수 없는 상품이 있습니다. 장바구니를 다시 확인해주세요.
+                            </p>
+
+
+                            <button id="checkout-review-button" class="checkout-review-button" type="submit" disabled>
+                                REVIEW ORDER
+                            </button>
+
+                        </form>
+
+
+                        <section id="checkout-review" class="checkout-review" hidden>
+
+                            <h3>ORDER REVIEW</h3>
+
+                            <dl class="checkout-review-list">
+
+                                <div>
+                                    <dt>NAME</dt>
+                                    <dd id="review-name"></dd>
+                                </div>
+
+                                <div>
+                                    <dt>PHONE</dt>
+                                    <dd id="review-phone"></dd>
+                                </div>
+
+                                <div>
+                                    <dt>EMAIL</dt>
+                                    <dd id="review-email"></dd>
+                                </div>
+
+                                <div>
+                                    <dt>ADDRESS</dt>
+                                    <dd id="review-address"></dd>
+                                </div>
+
+                                <div>
+                                    <dt>DELIVERY NOTE</dt>
+                                    <dd id="review-delivery-note"></dd>
+                                </div>
+
+                            </dl>
+
+
+                            <button id="checkout-edit-button" class="checkout-edit-button" type="button">
+                                EDIT INFORMATION
+                            </button>
+
+
+                            <button class="checkout-payment-button" type="button" disabled>
+                                PAYMENT NOT CONNECTED
+                            </button>
+
+                        </section>
+
+                    </section>
+
+
+                    <aside class="checkout-order-section">
+
+                        <h3>YOUR ORDER</h3>
+
+                        <div id="checkout-order-list" class="checkout-order-list"></div>
+
+
+                        <dl class="checkout-pricing">
+
+                            <div>
+                                <dt>SUBTOTAL</dt>
+                                <dd id="checkout-subtotal">₩ 0</dd>
+                            </div>
+
+                            <div>
+                                <dt>SHIPPING</dt>
+                                <dd>TO BE CONFIRMED</dd>
+                            </div>
+
+                            <div class="checkout-estimated-total">
+                                <dt>ESTIMATED TOTAL</dt>
+                                <dd id="checkout-estimated-total">₩ 0 + SHIPPING</dd>
+                            </div>
+
+                        </dl>
+
+
+                        <div class="checkout-reservation-notice">
+
+                            <p>
+                                상품 예약은 최종 결제하기를 누르고 재고 확인이 완료된 시점부터 10분간 시작됩니다.
+                            </p>
+
+                            <p>
+                                현재 정보 입력 및 주문 검토 단계에서는 상품이 예약되지 않습니다.
+                            </p>
+
+                            <p>
+                                결제 직전 선택 상품 중 하나라도 구매할 수 없는 경우 주문 전체가 중단됩니다.
+                            </p>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script src="js/product-status.js"></script>
+    <script src="js/products-data.js"></script>
+
+    <script src="js/cart-store.js"></script>
+    <script src="js/cart-ui.js"></script>
+    <script src="js/checkout-page.js"></script>
+
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/search-toggle.js"></script>
+
+</body>
+
+</html>

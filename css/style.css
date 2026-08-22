@@ -1119,6 +1119,281 @@ body.search-page .search-query {
 
 }
 
+/* =======================================
+   CHECKOUT FOUNDATION
+======================================= */
+
+.cart-checkout-message {
+    margin-top: 18px;
+    text-align: right;
+    font-size: 10px;
+    line-height: 1.7;
+    color: #777;
+}
+
+.cart-item.reserved .cart-item-image {
+    opacity: .6;
+}
+
+
+.checkout-main {
+    width: 100%;
+    max-width: 960px;
+    margin: 80px auto 140px;
+    padding: 0 20px;
+}
+
+.checkout-title {
+    margin-bottom: 55px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.checkout-loading,
+.checkout-error,
+.checkout-empty {
+    margin-top: 100px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+    letter-spacing: .5px;
+}
+
+.checkout-empty a {
+    display: inline-block;
+    margin-top: 25px;
+    color: #111;
+    font-size: 10px;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 90px;
+    align-items: start;
+}
+
+.checkout-form-group+.checkout-form-group {
+    margin-top: 65px;
+}
+
+.checkout-form-group h3,
+.checkout-review h3,
+.checkout-order-section>h3 {
+    margin-bottom: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.checkout-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 24px;
+}
+
+.checkout-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.checkout-field-wide {
+    grid-column: 1 / -1;
+}
+
+.checkout-field span {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #555;
+}
+
+.checkout-field input,
+.checkout-field textarea {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 1px solid #bbb;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #111;
+}
+
+.checkout-field textarea {
+    resize: vertical;
+}
+
+.checkout-field input:focus,
+.checkout-field textarea:focus {
+    border-bottom-color: #111;
+}
+
+.checkout-status-message {
+    margin-top: 35px;
+    font-size: 10px;
+    line-height: 1.8;
+    color: #777;
+}
+
+.checkout-review-button,
+.checkout-edit-button,
+.checkout-payment-button {
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: "SpecialElite", serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #111;
+    cursor: pointer;
+}
+
+.checkout-review-button {
+    display: block;
+    margin-top: 45px;
+    margin-left: auto;
+}
+
+.checkout-review-button:disabled,
+.checkout-payment-button:disabled {
+    color: #aaa;
+    cursor: default;
+}
+
+.checkout-review-list {
+    border-top: 1px solid #111;
+}
+
+.checkout-review-list>div {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.checkout-review-list dt {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #777;
+}
+
+.checkout-review-list dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #111;
+}
+
+.checkout-edit-button {
+    margin-top: 30px;
+    color: #777;
+}
+
+.checkout-payment-button {
+    display: block;
+    margin-top: 35px;
+    margin-left: auto;
+}
+
+.checkout-order-section {
+    position: sticky;
+    top: 70px;
+}
+
+.checkout-order-item {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: start;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.checkout-order-item img {
+    display: block;
+    width: 64px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.checkout-order-item.unavailable img {
+    opacity: .45;
+    filter: grayscale(100%);
+}
+
+.checkout-order-item a {
+    color: #111;
+    text-decoration: none;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.checkout-order-item div>p {
+    margin-top: 7px;
+    font-size: 9px;
+    color: #777;
+}
+
+.checkout-order-item>p {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.checkout-order-item .checkout-order-status {
+    letter-spacing: 1px;
+}
+
+.checkout-pricing {
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid #111;
+}
+
+.checkout-pricing>div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 14px;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.checkout-pricing dd {
+    text-align: right;
+}
+
+.checkout-pricing .checkout-estimated-total {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #ddd;
+    color: #111;
+}
+
+.checkout-reservation-notice {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+}
+
+.checkout-reservation-notice p {
+    margin-bottom: 10px;
+    font-size: 9px;
+    line-height: 1.8;
+    color: #777;
+}
+
+
 
 /* =======================================
    MOBILE
@@ -1722,5 +1997,61 @@ MOBILE SEARCH
     .search-panel .search-form button {
         font-size: 8px;
     }
-    
+
+/* =======================================
+             MOBILE checkout
+======================================= */
+
+    body.checkout-page .mobile-nav {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .checkout-main {
+        margin: 70px auto 110px;
+        padding: 0 16px;
+    }
+
+    .checkout-title {
+        margin-bottom: 35px;
+    }
+
+    .checkout-layout {
+        grid-template-columns: 1fr;
+        gap: 70px;
+    }
+
+    .checkout-field-grid {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+
+    .checkout-field-wide {
+        grid-column: auto;
+    }
+
+    .checkout-order-section {
+        position: static;
+    }
+
+    .checkout-review-list>div {
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 15px;
+    }
+
+    .checkout-order-item {
+        grid-template-columns: 58px minmax(0, 1fr) auto;
+        gap: 14px;
+    }
+
+    .checkout-order-item img {
+        width: 58px;
+    }
+
+    .cart-checkout-message {
+        text-align: left;
+    }
+
+
 }
