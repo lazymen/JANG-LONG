@@ -1,0 +1,7 @@
+{
+    "name": "jang-long",
+    "private": true,
+    "devDependencies": {
+        "supabase": "2.115.0"
+    }
+}
