@@ -206,7 +206,7 @@ begin
     if v_expected_error_seen is not true then
         raise exception 'Unavailable product request did not fail';
     end if;
-
+    
     if exists (
         select 1
         from public.orders as orders
