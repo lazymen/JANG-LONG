@@ -196,11 +196,10 @@ async function sha256Hex(value: string): Promise<string> {
  * 모든 주소를 false로 처리하지 않는다.
  */
 function classifyRemoteArea(_postalCode: string): boolean {
-  throw new CheckoutError(
-    503,
-    "REMOTE_AREA_CLASSIFIER_NOT_READY",
-    "배송 지역 확인 기능을 준비 중입니다. 잠시 후 다시 시도해주세요.",
-  );
+  // 임시 운영 규칙: 배송사·우편번호 판별 기준이 확정되기 전에는
+  // 모든 주소를 일반 지역으로 처리한다.
+  // 실제 결제 연동 전에는 실제 분류기로 반드시 교체한다.
+  return false;
 }
 
 function convertDatabaseError(message: string): CheckoutError {

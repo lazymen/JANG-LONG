@@ -1,39 +1,30 @@
-const checkoutLoading =
-    document.getElementById("checkout-loading");
+const checkoutLoading = document.getElementById("checkout-loading");
 
-const checkoutError =
-    document.getElementById("checkout-error");
+const checkoutError = document.getElementById("checkout-error");
 
-const checkoutEmpty =
-    document.getElementById("checkout-empty");
+const checkoutEmpty = document.getElementById("checkout-empty");
 
-const checkoutContent =
-    document.getElementById("checkout-content");
+const checkoutContent = document.getElementById("checkout-content");
 
-const checkoutForm =
-    document.getElementById("checkout-form");
+const checkoutForm = document.getElementById("checkout-form");
 
-const checkoutReview =
-    document.getElementById("checkout-review");
+const checkoutReview = document.getElementById("checkout-review");
 
-const checkoutReviewButton =
-    document.getElementById("checkout-review-button");
+const checkoutReviewButton = document.getElementById("checkout-review-button");
 
-const checkoutEditButton =
-    document.getElementById("checkout-edit-button");
+const checkoutEditButton = document.getElementById("checkout-edit-button");
 
-const checkoutStatusMessage =
-    document.getElementById("checkout-status-message");
+const checkoutStatusMessage = document.getElementById(
+    "checkout-status-message",
+);
 
-const checkoutOrderList =
-    document.getElementById("checkout-order-list");
+const checkoutOrderList = document.getElementById("checkout-order-list");
 
-const checkoutSubtotal =
-    document.getElementById("checkout-subtotal");
+const checkoutSubtotal = document.getElementById("checkout-subtotal");
 
-const checkoutEstimatedTotal =
-    document.getElementById("checkout-estimated-total");
-
+const checkoutEstimatedTotal = document.getElementById(
+    "checkout-estimated-total",
+);
 
 const CHECKOUT_UNAVAILABLE_MESSAGE =
     "현재 선택하신 상품 중 구매할 수 없는 상품이 있습니다. 장바구니를 다시 확인해주세요.";
@@ -43,32 +34,25 @@ const CHECKOUT_RECHECK_ERROR_MESSAGE =
 
 let checkoutCanReview = false;
 
-
 function formatPrice(price) {
-
     return `₩ ${price.toLocaleString()}`;
-
 }
-
 
 function escapeCheckoutHtml(value) {
-
     return String(value).replace(
         /[&<>"']/g,
-        character => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            "\"": "&quot;",
-            "'": "&#039;"
-        })[character]
+        (character) =>
+            ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;",
+            })[character],
     );
-
 }
 
-
 function getProductStatusLabel(product) {
-
     if (isGone(product)) {
         return "GONE";
     }
@@ -78,71 +62,56 @@ function getProductStatusLabel(product) {
     }
 
     return "";
-
 }
 
-
 function renderCheckout(products) {
-
     const storedCartIds = getCart();
 
     const loadedProductIds = new Set(
-        products.map(product => product.id)
+        products.map((product) => product.id),
     );
 
     const hasMissingProducts = storedCartIds.some(
-        productId => !loadedProductIds.has(productId)
+        (productId) => !loadedProductIds.has(productId),
     );
 
     const cartIds = removeMissingProductsFromCart(products);
 
     updateCartCount();
 
-
     const cartProducts = cartIds
-        .map(productId =>
-            findProductById(products, productId)
-        )
+        .map((productId) => findProductById(products, productId))
         .filter(Boolean);
-
 
     checkoutLoading.hidden = true;
     checkoutEmpty.hidden = true;
     checkoutContent.hidden = true;
     checkoutCanReview = false;
 
-
     if (cartProducts.length === 0) {
-
         checkoutEmpty.hidden = false;
 
         return;
     }
 
+    const availableProducts = cartProducts.filter(isAvailable);
 
-    const availableProducts =
-        cartProducts.filter(isAvailable);
-
-    const hasUnavailableProducts =
-        hasMissingProducts ||
+    const hasUnavailableProducts = hasMissingProducts ||
         availableProducts.length !== cartProducts.length;
 
-
     checkoutOrderList.innerHTML = cartProducts
-        .map(product => {
+        .map((product) => {
+            const statusLabel = getProductStatusLabel(product);
 
-            const statusLabel =
-                getProductStatusLabel(product);
+            const safeProductName = escapeCheckoutHtml(product.name);
 
-            const safeProductName =
-                escapeCheckoutHtml(product.name);
-
-            const safeProductSize =
-                escapeCheckoutHtml(product.size || "-");
+            const safeProductSize = escapeCheckoutHtml(product.size || "-");
 
             return `
 
-                <article class="checkout-order-item ${statusLabel ? "unavailable" : ""}">
+                <article class="checkout-order-item ${
+                statusLabel ? "unavailable" : ""
+            }">
 
                     <img
                         src="images/products/${product.id}/main.jpg"
@@ -157,10 +126,11 @@ function renderCheckout(products) {
 
                         <p>${safeProductSize}</p>
 
-                        ${statusLabel
+                        ${
+                statusLabel
                     ? `<p class="checkout-order-status">${statusLabel}</p>`
                     : ""
-                }
+            }
 
                     </div>
 
@@ -169,114 +139,90 @@ function renderCheckout(products) {
                 </article>
 
             `;
-
         })
         .join("");
 
-
     const subtotal = availableProducts
         .reduce(
-            (sum, product) =>
-                sum + product.price,
-            0
+            (sum, product) => sum + product.price,
+            0,
         );
 
+    checkoutSubtotal.textContent = formatPrice(subtotal);
 
-    checkoutSubtotal.textContent =
-        formatPrice(subtotal);
+    checkoutEstimatedTotal.textContent = `${formatPrice(subtotal)} + SHIPPING`;
 
-    checkoutEstimatedTotal.textContent =
-        `${formatPrice(subtotal)} + SHIPPING`;
-
-
-    checkoutReviewButton.disabled =
-        availableProducts.length === 0 ||
+    checkoutReviewButton.disabled = availableProducts.length === 0 ||
         hasUnavailableProducts;
 
-    checkoutCanReview =
-        !checkoutReviewButton.disabled;
+    checkoutCanReview = !checkoutReviewButton.disabled;
 
-    checkoutStatusMessage.textContent =
-        CHECKOUT_UNAVAILABLE_MESSAGE;
+    checkoutStatusMessage.textContent = CHECKOUT_UNAVAILABLE_MESSAGE;
 
-    checkoutStatusMessage.hidden =
-        !hasUnavailableProducts;
+    checkoutStatusMessage.hidden = !hasUnavailableProducts;
 
     checkoutContent.hidden = false;
-
 }
 
-
 function showOrderReview() {
-
     const formData = new FormData(checkoutForm);
 
-    const customerName =
-        formData.get("customerName").trim();
+    const customerName = formData.get("customerName").trim();
 
-    const customerPhone =
-        formData.get("customerPhone").trim();
+    const customerPhone = formData.get("customerPhone").trim();
 
-    const customerEmail =
-        formData.get("customerEmail").trim();
+    const customerEmail = formData.get("customerEmail").trim();
 
-    const postalCode =
-        formData.get("postalCode").trim();
+    const postalCode = formData.get("postalCode").trim();
 
-    const addressLine1 =
-        formData.get("addressLine1").trim();
+    const addressLine1 = formData.get("addressLine1").trim();
 
-    const addressLine2 =
-        formData.get("addressLine2").trim();
+    const addressLine2 = formData.get("addressLine2").trim();
 
-    const deliveryNote =
-        formData.get("deliveryNote").trim();
+    const deliveryNote = formData.get("deliveryNote").trim();
 
+    document.getElementById("review-name").textContent = customerName;
 
-    document.getElementById("review-name").textContent =
-        customerName;
+    document.getElementById("review-phone").textContent = customerPhone;
 
-    document.getElementById("review-phone").textContent =
-        customerPhone;
+    document.getElementById("review-email").textContent = customerEmail;
 
-    document.getElementById("review-email").textContent =
-        customerEmail;
-
-    document.getElementById("review-address").textContent =
-        [postalCode, addressLine1, addressLine2]
-            .filter(Boolean)
-            .join(" / ");
+    document.getElementById("review-address").textContent = [
+        postalCode,
+        addressLine1,
+        addressLine2,
+    ]
+        .filter(Boolean)
+        .join(" / ");
 
     document.getElementById("review-delivery-note").textContent =
         deliveryNote || "-";
 
-
     checkoutForm.hidden = true;
     checkoutReview.hidden = false;
 
+    const paymentButton = document.getElementById("checkout-payment-button");
+
+    paymentButton.disabled = paymentButton.dataset.reservationActive === "true";
+
     checkoutReview.scrollIntoView({
         behavior: "smooth",
-        block: "start"
+        block: "start",
     });
-
 }
-
 
 checkoutForm.addEventListener(
     "submit",
-    async event => {
-
+    async (event) => {
         event.preventDefault();
 
         if (!checkoutForm.reportValidity()) {
             return;
         }
 
-        const originalButtonText =
-            checkoutReviewButton.textContent;
+        const originalButtonText = checkoutReviewButton.textContent;
 
-        const couldReviewBeforeCheck =
-            checkoutCanReview;
+        const couldReviewBeforeCheck = checkoutCanReview;
 
         checkoutCanReview = false;
         checkoutReviewButton.disabled = true;
@@ -284,9 +230,7 @@ checkoutForm.addEventListener(
         checkoutStatusMessage.hidden = true;
 
         try {
-
-            const latestProducts =
-                await loadProductsByIds(getCart());
+            const latestProducts = await loadProductsByIds(getCart());
 
             renderCheckout(latestProducts);
 
@@ -295,60 +239,44 @@ checkoutForm.addEventListener(
             }
 
             showOrderReview();
-
         } catch (error) {
-
             console.error(error);
 
-            checkoutCanReview =
-                couldReviewBeforeCheck;
-            checkoutStatusMessage.textContent =
-                CHECKOUT_RECHECK_ERROR_MESSAGE;
+            checkoutCanReview = couldReviewBeforeCheck;
+            checkoutStatusMessage.textContent = CHECKOUT_RECHECK_ERROR_MESSAGE;
             checkoutStatusMessage.hidden = false;
-
         } finally {
+            checkoutReviewButton.textContent = originalButtonText;
 
-            checkoutReviewButton.textContent =
-                originalButtonText;
-
-            checkoutReviewButton.disabled =
-                !checkoutCanReview;
-
+            checkoutReviewButton.disabled = !checkoutCanReview;
         }
-
-    }
+    },
 );
-
 
 checkoutEditButton.addEventListener(
     "click",
     () => {
-
         checkoutReview.hidden = true;
         checkoutForm.hidden = false;
 
+        document
+            .getElementById("checkout-payment-button")
+            .disabled = true;
+
         checkoutForm.scrollIntoView({
             behavior: "smooth",
-            block: "start"
+            block: "start",
         });
-
-    }
+    },
 );
 
-
 loadProductsByIds(getCart())
-
-    .then(products => {
-
+    .then((products) => {
         renderCheckout(products);
-
     })
-
-    .catch(error => {
-
+    .catch((error) => {
         console.error(error);
 
         checkoutLoading.hidden = true;
         checkoutError.hidden = false;
-
     });
