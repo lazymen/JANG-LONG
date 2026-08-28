@@ -1,5 +1,5 @@
 -- JANG LONG
--- Keep guest checkout reservations short and non-extendable.
+-- Keep each guest checkout reservation to a fixed five-minute window.
 
 begin;
 
@@ -27,17 +27,8 @@ on public.orders
 for each row
 execute function public.enforce_guest_checkout_reservation_window();
 
-comment on function public.enforce_guest_checkout_reservation_window() is
-'Enforces a fixed five-minute pending-payment reservation.';
-
--- Existing pending reservations also follow the new customer-facing rule.
--- Paid, cancelled, and expired orders are untouched.
 update public.orders
 set reservation_expires_at = reservation_started_at + interval '5 minutes'
-where status = 'pending_payment'
-  and reservation_expires_at > reservation_started_at + interval '5 minutes';
-
--- Release anything that is already expired under the new rule.
-select public.expire_guest_checkouts(100);
+where status = 'pending_payment';
 
 commit;

@@ -87,7 +87,7 @@ begin
        or v_first.total_amount
           <> v_server_price + v_expected_shipping_fee
        or v_first.reservation_expires_at - v_first.reservation_started_at
-          <> interval '10 minutes' then
+          <> interval '5 minutes' then
         raise exception 'New checkout result verification failed';
     end if;
 
