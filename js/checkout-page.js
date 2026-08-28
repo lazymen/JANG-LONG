@@ -70,7 +70,7 @@ function createOpaqueToken() {
 
 function loadActiveReservation() {
     try {
-        const savedReservation = sessionStorage.getItem(
+        const savedReservation = localStorage.getItem(
             CHECKOUT_RESERVATION_STORAGE_KEY,
         );
 
@@ -98,12 +98,12 @@ function loadActiveReservation() {
 
 function saveActiveReservation() {
     if (!activeReservation) {
-        sessionStorage.removeItem(CHECKOUT_RESERVATION_STORAGE_KEY);
+        localStorage.removeItem(CHECKOUT_RESERVATION_STORAGE_KEY);
 
         return;
     }
 
-    sessionStorage.setItem(
+    localStorage.setItem(
         CHECKOUT_RESERVATION_STORAGE_KEY,
         JSON.stringify(activeReservation),
     );
