@@ -4,6 +4,8 @@
 
     const RESUME_URL =
         `${JANG_LONG_SUPABASE_URL}/functions/v1/resume-guest-checkout`;
+    const CANCEL_URL =
+        `${JANG_LONG_SUPABASE_URL}/functions/v1/cancel-guest-checkout`;
 
     const SESSION_KEY = "janglong-guest-checkout-reservation-v1";
 
@@ -36,6 +38,12 @@
     );
     const activeCountdown = document.getElementById(
         "active-reservation-countdown",
+    );
+    const activeCancelButton = document.getElementById(
+        "active-reservation-cancel-button"
+    );
+    const activeMessage = document.getElementById(
+        "active-reservation-message"
     );
 
     if (
@@ -173,7 +181,11 @@
         return order?.[snakeCase] ?? order?.[camelCase];
     }
 
-    async function callFunction(url, body) {
+    async function callFunction(
+        url,
+        body,
+        { expectsOrder = true } = {},
+    ) {
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -193,6 +205,10 @@
                 new Error(getErrorCode(payload)),
                 { code: getErrorCode(payload) },
             );
+        }
+
+        if (!expectsOrder) {
+            return payload;
         }
 
         const order = orderFrom(payload);
@@ -333,6 +349,16 @@
         review.hidden = true;
         active.hidden = false;
 
+        if (activeCancelButton) {
+            activeCancelButton.disabled = false;
+            activeCancelButton.textContent = "CANCEL RESERVATION";
+        }
+
+        if (activeMessage) {
+            activeMessage.hidden = true;
+            activeMessage.textContent = "";
+        }
+
         activeOrderNumber.textContent =
             orderValue(order, "order_number", "orderNumber") ??
             orderValue(order, "order_id", "orderId");
@@ -357,6 +383,11 @@
 
         showStatusMessage(message);
 
+        if (paymentMessage) {
+            paymentMessage.hidden = true;
+            paymentMessage.textContent = "";
+        }
+
         if (
             typeof loadProductsByIds === "function" &&
             typeof renderCheckout === "function"
@@ -365,6 +396,104 @@
                 .then(renderCheckout)
                 .catch(console.error);
         }
+    }
+
+
+    function showActiveMessage(message) {
+
+        if (!activeMessage) {
+            return;
+        }
+
+        activeMessage.textContent = message;
+        activeMessage.hidden = false;
+
+    }
+
+    async function cancelReservation() {
+
+        const session = readSession();
+
+        if (!session) {
+            endReservation(
+                "예약 정보를 찾을 수 없습니다. 장바구니에서 다시 시작해주세요."
+            );
+
+            return;
+        }
+
+        const confirmed = window.confirm(
+            "예약을 취소할까요?\n상품은 다시 구매 가능 상태가 됩니다."
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const originalLabel =
+            activeCancelButton.textContent;
+
+        activeCancelButton.disabled = true;
+
+        activeCancelButton.textContent =
+            "CANCELLING...";
+
+        if (activeMessage) {
+            activeMessage.hidden = true;
+        }
+
+        try {
+
+            await callFunction(
+                CANCEL_URL,
+                {
+                    checkoutToken: session.checkoutToken,
+                    recoveryToken: session.recoveryToken,
+                },
+                {
+                    expectsOrder: false,
+                },
+            );
+            endReservation(
+                "상품 예약을 취소했습니다. 상품을 다시 구매할 수 있습니다.",
+            );
+        } catch (error) {
+
+            console.error(error);
+
+            const code = error?.code;
+
+            if (
+                [
+                    "CHECKOUT_RECOVERY_NOT_FOUND",
+                    "CHECKOUT_RESERVATION_EXPIRED",
+                    "CHECKOUT_SESSION_CLOSED",
+                ].includes(code)
+            ) {
+                endReservation(customerMessage(code));
+
+                return;
+            }
+
+            activeCancelButton.disabled = false;
+
+            activeCancelButton.textContent =
+                originalLabel;
+
+            if (code === "CHECKOUT_PAYMENT_STATUS_UNRESOLVED") {
+                showActiveMessage(
+                    "결제 상태를 확인하는 중에는 예약을 취소할 수 없습니다."
+                );
+
+                return;
+            }
+
+            showActiveMessage(
+                "예약 취소에 실패했습니다. 잠시 후 다시 시도해주세요."
+            );
+
+        }
+
     }
 
     function startCountdown(expiresAt) {
@@ -595,7 +724,16 @@
             }
         },
     );
+    if (activeCancelButton) {
 
+        activeCancelButton.addEventListener(
+            "click",
+            () => {
+                void cancelReservation();
+            }
+        );
+
+    }
     const savedSession = readSession();
 
     if (savedSession) {
