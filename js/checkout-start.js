@@ -1,368 +1,560 @@
 (() => {
-    const CHECKOUT_FUNCTION_URL =
+    const START_URL =
         `${JANG_LONG_SUPABASE_URL}/functions/v1/start-guest-checkout`;
 
-    const CHECKOUT_SESSION_KEY = "janglong-guest-checkout-session";
+    const RESUME_URL =
+        `${JANG_LONG_SUPABASE_URL}/functions/v1/resume-guest-checkout`;
 
-    const checkoutForm = document.getElementById("checkout-form");
+    const SESSION_KEY = "janglong-guest-checkout-reservation-v1";
 
+    const TOKEN_PATTERN = /^[0-9a-f]{64}$/i;
+    const PRODUCT_ID_PATTERN = /^[0-9]{4}$/;
+    const START_LABEL = "START 5-MINUTE RESERVATION";
+
+    const form = document.getElementById("checkout-form");
     const paymentButton = document.getElementById("checkout-payment-button");
-
     const editButton = document.getElementById("checkout-edit-button");
-
-    const paymentMessage = document.getElementById("checkout-payment-message");
-
-    const shippingElement = document.getElementById("checkout-shipping");
-
-    const totalElement = document.getElementById("checkout-estimated-total");
+    const paymentMessage = document.getElementById(
+        "checkout-payment-message",
+    );
+    const statusMessage = document.getElementById(
+        "checkout-status-message",
+    );
+    const shipping = document.getElementById("checkout-shipping");
+    const total = document.getElementById("checkout-estimated-total");
+    const checkoutSubtotalElement = document.getElementById(
+        "checkout-subtotal",
+    );
+    const orderList = document.getElementById("checkout-order-list");
+    const review = document.getElementById("checkout-review");
+    const content = document.getElementById("checkout-content");
+    const empty = document.getElementById("checkout-empty");
+    const loading = document.getElementById("checkout-loading");
+    const active = document.getElementById("checkout-active-reservation");
+    const activeOrderNumber = document.getElementById(
+        "active-reservation-order-number",
+    );
+    const activeCountdown = document.getElementById(
+        "active-reservation-countdown",
+    );
 
     if (
-        !checkoutForm ||
+        !form ||
         !paymentButton ||
         !editButton ||
-        !paymentMessage
+        !paymentMessage ||
+        !review ||
+        !active ||
+        !activeOrderNumber ||
+        !activeCountdown
     ) {
         return;
     }
 
-    const ORIGINAL_BUTTON_TEXT = "START 10-MINUTE RESERVATION";
-
     let countdownTimer = null;
 
-    function createSecureToken() {
+    function setRecoveryInProgress(value) {
+        window.jangLongReservationRecoveryInProgress = value;
+    }
+
+    function createToken() {
         const bytes = new Uint8Array(32);
 
         crypto.getRandomValues(bytes);
 
-        return Array
-            .from(bytes)
-            .map((byte) => byte.toString(16).padStart(2, "0"))
-            .join("");
+        return Array.from(
+            bytes,
+            (byte) => byte.toString(16).padStart(2, "0"),
+        ).join("");
     }
 
-    function getCartSignature(productIds) {
-        return JSON.stringify(
-            [...productIds].sort(),
+    function cartSignature(productIds) {
+        return JSON.stringify([...productIds].sort());
+    }
+
+    function isStoredSession(value) {
+        return Boolean(
+            value &&
+            typeof value === "object" &&
+            typeof value.cartSignature === "string" &&
+            typeof value.checkoutToken === "string" &&
+            TOKEN_PATTERN.test(value.checkoutToken) &&
+            typeof value.recoveryToken === "string" &&
+            TOKEN_PATTERN.test(value.recoveryToken),
         );
     }
 
-    function readCheckoutSession() {
+    function readSession() {
         try {
-            return JSON.parse(
-                sessionStorage.getItem(
-                    CHECKOUT_SESSION_KEY,
-                ),
+            const value = JSON.parse(
+                localStorage.getItem(SESSION_KEY),
             );
+
+            return isStoredSession(value) ? value : null;
         } catch {
             return null;
         }
     }
 
-    function saveCheckoutSession(session) {
-        sessionStorage.setItem(
-            CHECKOUT_SESSION_KEY,
-            JSON.stringify(session),
+    function saveSession(session) {
+        localStorage.setItem(
+            SESSION_KEY,
+            JSON.stringify({
+                version: 1,
+                cartSignature: session.cartSignature,
+                checkoutToken: session.checkoutToken,
+                recoveryToken: session.recoveryToken,
+                orderId: session.orderId ?? null,
+                orderNumber: session.orderNumber ?? null,
+                expiresAt: session.expiresAt ?? null,
+            }),
         );
     }
 
-    function getOrCreateCheckoutSession(productIds) {
-        const cartSignature = getCartSignature(productIds);
-
-        const existingSession = readCheckoutSession();
-
-        if (
-            existingSession &&
-            existingSession.cartSignature === cartSignature
-        ) {
-            return existingSession;
-        }
-
-        const newSession = {
-            cartSignature,
-            checkoutToken: createSecureToken(),
-            recoveryToken: createSecureToken(),
-        };
-
-        saveCheckoutSession(newSession);
-
-        return newSession;
+    function clearSession() {
+        localStorage.removeItem(SESSION_KEY);
     }
 
-    function formatCheckoutPrice(value) {
-        return `₩ ${Number(value).toLocaleString()}`;
-    }
-
-    function showPaymentMessage(text) {
-        paymentMessage.textContent = text;
+    function showPaymentMessage(message) {
+        paymentMessage.textContent = message;
         paymentMessage.hidden = false;
     }
 
-    function extractOrder(payload) {
-        const result = payload?.order ??
-            payload?.data ??
-            payload?.result ??
-            payload;
+    function showStatusMessage(message) {
+        if (!statusMessage) {
+            return;
+        }
 
-        return Array.isArray(result) ? result[0] : result;
-    }
-
-    function getOrderValue(order, snakeCase, camelCase) {
-        return order?.[snakeCase] ??
-            order?.[camelCase];
+        statusMessage.textContent = message;
+        statusMessage.hidden = false;
     }
 
     function getErrorCode(payload) {
-        return (
-            payload?.error?.code ??
-                payload?.code ??
-                payload?.error ??
-                "CHECKOUT_REQUEST_FAILED"
-        );
+        return payload?.error?.code ??
+            payload?.code ??
+            "CHECKOUT_REQUEST_FAILED";
     }
 
-    function getCustomerMessage(errorCode) {
+    function customerMessage(code) {
         const messages = {
             CHECKOUT_PRODUCTS_UNAVAILABLE:
                 "현재 선택하신 상품 중 구매할 수 없는 상품이 있습니다. 장바구니를 다시 확인해주세요.",
 
             CHECKOUT_RESERVATION_EXPIRED:
-                "이전 상품 예약이 종료되었습니다. 장바구니에서 다시 확인해주세요.",
+                "이전 상품 예약이 종료되었습니다. 상품 상태를 다시 확인해주세요.",
 
             CHECKOUT_SESSION_CLOSED:
                 "이 결제 진행은 종료되었습니다. 장바구니에서 다시 시작해주세요.",
 
-            CHECKOUT_KEY_REUSED_WITH_DIFFERENT_DATA:
-                "진행 중인 주문 정보와 현재 입력 정보가 다릅니다. 페이지를 새로고침한 뒤 다시 확인해주세요.",
+            CHECKOUT_RECOVERY_NOT_FOUND:
+                "진행 중인 예약을 찾지 못했습니다. 장바구니에서 다시 시도해주세요.",
 
-            INVALID_REMOTE_AREA_STATE:
-                "배송 지역을 확인하지 못했습니다. 잠시 후 다시 시도해주세요.",
+            CHECKOUT_ACTIVE_RESERVATION_EXISTS:
+                "같은 브라우저에 진행 중인 예약이 있습니다. 예약이 끝난 뒤 다시 시도해주세요.",
+
+            CHECKOUT_RESERVATION_CONFIRMATION_REQUIRED:
+                "기존 예약 상태를 먼저 확인해야 합니다. 페이지를 새로고침해 다시 확인해주세요.",
         };
 
-        return messages[errorCode] ??
+        return messages[code] ??
             "상품 예약을 시작하지 못했습니다. 잠시 후 다시 시도해주세요.";
     }
 
-    function startCountdown(expiresAt) {
-        const expirationTime = Date.parse(expiresAt);
+    function orderFrom(payload) {
+        const value = payload?.order ??
+            payload?.data ??
+            payload?.result ??
+            payload;
 
-        if (Number.isNaN(expirationTime)) {
-            paymentButton.textContent = "RESERVATION STARTED";
+        return Array.isArray(value) ? value[0] : value;
+    }
 
+    function orderValue(order, snakeCase, camelCase) {
+        return order?.[snakeCase] ?? order?.[camelCase];
+    }
+
+    async function callFunction(url, body) {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                apikey: JANG_LONG_SUPABASE_PUBLISHABLE_KEY,
+            },
+            cache: "no-store",
+            body: JSON.stringify(body),
+        });
+
+        const payload = await response
+            .json()
+            .catch(() => ({}));
+
+        if (!response.ok) {
+            throw Object.assign(
+                new Error(getErrorCode(payload)),
+                { code: getErrorCode(payload) },
+            );
+        }
+
+        const order = orderFrom(payload);
+
+        const orderId = orderValue(order, "order_id", "orderId");
+
+        const expiresAt = orderValue(
+            order,
+            "reservation_expires_at",
+            "reservationExpiresAt",
+        );
+
+        if (!orderId || !expiresAt) {
+            throw Object.assign(
+                new Error("INVALID_CHECKOUT_RESPONSE"),
+                { code: "INVALID_CHECKOUT_RESPONSE" },
+            );
+        }
+
+        return order;
+    }
+
+    function formatPrice(value) {
+        return `₩ ${Number(value).toLocaleString()}`;
+    }
+
+    function escapeHtml(value) {
+        return String(value).replace(
+            /[&<>"']/g,
+            (character) =>
+                ({
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#039;",
+                })[character],
+        );
+    }
+
+    function updatePrice(order) {
+        const subtotalAmount = Number(
+            orderValue(order, "subtotal", "subtotal"),
+        );
+
+        const shippingFee = Number(
+            orderValue(order, "shipping_fee", "shippingFee"),
+        );
+
+        const totalAmount = Number(
+            orderValue(order, "total_amount", "totalAmount"),
+        );
+
+        if (
+            checkoutSubtotalElement &&
+            Number.isFinite(subtotalAmount)
+        ) {
+            checkoutSubtotalElement.textContent =
+                formatPrice(subtotalAmount);
+        }
+
+        if (shipping && Number.isFinite(shippingFee)) {
+            shipping.textContent = formatPrice(shippingFee);
+        }
+
+        if (total && Number.isFinite(totalAmount)) {
+            total.textContent = formatPrice(totalAmount);
+        }
+    }
+
+    function renderOrderItems(order) {
+        const items = orderValue(order, "order_items", "orderItems");
+
+        if (!orderList || !Array.isArray(items)) {
             return;
         }
 
-        paymentButton.dataset.reservationActive = "true";
+        orderList.innerHTML = items
+            .map((item) => {
+                const productId = String(
+                    orderValue(item, "product_id", "productId") ?? "",
+                );
 
-        paymentButton.disabled = true;
-        editButton.disabled = true;
+                const name = String(
+                    orderValue(item, "product_name", "productName") ?? "",
+                );
+
+                const size = String(item?.size ?? "-");
+
+                const price = Number(
+                    orderValue(item, "unit_price", "unitPrice"),
+                );
+
+                const imagePath = String(
+                    orderValue(item, "image_path", "imagePath") ?? "",
+                );
+
+                const safeImagePath =
+                    /^images\/products\/[0-9]{4}\/[A-Za-z0-9._-]+$/.test(
+                        imagePath,
+                    )
+                        ? imagePath
+                        : `images/products/${productId}/main.jpg`;
+
+                return `
+                    <article class="checkout-order-item">
+                        <img
+                            src="${escapeHtml(safeImagePath)}"
+                            alt="${escapeHtml(name)}"
+                        >
+
+                        <div>
+                            <p>${escapeHtml(name)}</p>
+                            <p>${escapeHtml(size)}</p>
+                        </div>
+
+                        <p>${formatPrice(price)}</p>
+                    </article>
+                `;
+            })
+            .join("");
+    }
+
+    function showRecoveredReservation(order) {
+        if (loading) {
+            loading.hidden = true;
+        }
+
+        if (empty) {
+            empty.hidden = true;
+        }
+
+        if (content) {
+            content.hidden = false;
+        }
+
+        form.hidden = true;
+        review.hidden = true;
+        active.hidden = false;
+
+        activeOrderNumber.textContent =
+            orderValue(order, "order_number", "orderNumber") ??
+            orderValue(order, "order_id", "orderId");
+
+        renderOrderItems(order);
+        updatePrice(order);
+    }
+
+    function endReservation(message) {
+        clearInterval(countdownTimer);
+        clearSession();
+        setRecoveryInProgress(false);
+
+        active.hidden = true;
+        review.hidden = true;
+        form.hidden = false;
+
+        paymentButton.dataset.reservationActive = "false";
+        paymentButton.disabled = false;
+        paymentButton.textContent = START_LABEL;
+        editButton.disabled = false;
+
+        showStatusMessage(message);
+
+        if (
+            typeof loadProductsByIds === "function" &&
+            typeof renderCheckout === "function"
+        ) {
+            loadProductsByIds(getCart())
+                .then(renderCheckout)
+                .catch(console.error);
+        }
+    }
+
+    function startCountdown(expiresAt) {
+        const end = Date.parse(expiresAt);
+
+        if (Number.isNaN(end)) {
+            return;
+        }
 
         clearInterval(countdownTimer);
 
-        function updateCountdown() {
-            const remainingMilliseconds = expirationTime - Date.now();
+        paymentButton.dataset.reservationActive = "true";
+        paymentButton.disabled = true;
+        editButton.disabled = true;
 
-            if (remainingMilliseconds <= 0) {
-                clearInterval(countdownTimer);
+        function update() {
+            const remaining = end - Date.now();
 
-                paymentButton.textContent = "RESERVATION EXPIRED";
-
-                showPaymentMessage(
-                    "10분의 상품 예약 시간이 종료되었습니다. 상품 상태를 다시 확인해주세요.",
+            if (remaining <= 0) {
+                endReservation(
+                    "상품 예약 시간이 종료되었습니다. 장바구니 상품 상태를 다시 확인해주세요.",
                 );
 
                 return;
             }
 
-            const remainingSeconds = Math.ceil(
-                remainingMilliseconds / 1000,
-            );
+            const seconds = Math.ceil(remaining / 1000);
 
-            const minutes = Math.floor(remainingSeconds / 60);
+            const label = `RESERVED ${Math.floor(seconds / 60)
+                }:${String(seconds % 60).padStart(2, "0")}`;
 
-            const seconds = remainingSeconds % 60;
-
-            paymentButton.textContent = `RESERVED ${minutes}:${
-                String(seconds).padStart(2, "0")
-            }`;
+            paymentButton.textContent = label;
+            activeCountdown.textContent = label;
         }
 
-        updateCountdown();
+        update();
 
-        countdownTimer = setInterval(updateCountdown, 1000);
+        countdownTimer = setInterval(update, 1000);
+    }
+
+    async function resumeReservation(session) {
+        try {
+            const order = await callFunction(RESUME_URL, {
+                checkoutToken: session.checkoutToken,
+                recoveryToken: session.recoveryToken,
+            });
+
+            const nextSession = {
+                ...session,
+                orderId: orderValue(order, "order_id", "orderId"),
+                orderNumber: orderValue(
+                    order,
+                    "order_number",
+                    "orderNumber",
+                ),
+                expiresAt: orderValue(
+                    order,
+                    "reservation_expires_at",
+                    "reservationExpiresAt",
+                ),
+            };
+
+            saveSession(nextSession);
+            showRecoveredReservation(order);
+            startCountdown(nextSession.expiresAt);
+        } catch (error) {
+            console.error(error);
+
+            if (
+                [
+                    "CHECKOUT_RECOVERY_NOT_FOUND",
+                    "CHECKOUT_RESERVATION_EXPIRED",
+                    "CHECKOUT_SESSION_CLOSED",
+                ].includes(error.code)
+            ) {
+                endReservation(customerMessage(error.code));
+
+                return;
+            }
+
+            setRecoveryInProgress(false);
+
+            showStatusMessage(
+                "예약 상태를 확인하지 못했습니다. 잠시 후 다시 확인해주세요.",
+            );
+        }
     }
 
     paymentButton.addEventListener(
         "click",
         async () => {
-            if (!checkoutForm.reportValidity()) {
+            if (!form.reportValidity()) {
                 return;
             }
 
-            const productIds = getCart();
+            const productIds = [...new Set(getCart())].filter(
+                (productId) => PRODUCT_ID_PATTERN.test(productId),
+            );
 
             if (productIds.length === 0) {
+                showPaymentMessage("장바구니가 비어 있습니다.");
+
+                return;
+            }
+
+            const signature = cartSignature(productIds);
+
+            let session = readSession();
+
+            if (session && session.cartSignature !== signature) {
                 showPaymentMessage(
-                    "장바구니가 비어 있습니다.",
+                    customerMessage(
+                        "CHECKOUT_RESERVATION_CONFIRMATION_REQUIRED",
+                    ),
                 );
 
                 return;
             }
 
-            const formData = new FormData(checkoutForm);
+            if (!session) {
+                session = {
+                    cartSignature: signature,
+                    checkoutToken: createToken(),
+                    recoveryToken: createToken(),
+                };
 
-            const checkoutSession = getOrCreateCheckoutSession(
-                productIds,
-            );
+                saveSession(session);
+            }
+
+            const values = new FormData(form);
 
             paymentButton.disabled = true;
             editButton.disabled = true;
-
             paymentButton.textContent = "RESERVING...";
-
             paymentMessage.hidden = true;
 
             try {
-                const response = await fetch(
-                    CHECKOUT_FUNCTION_URL,
-                    {
-                        method: "POST",
+                const order = await callFunction(START_URL, {
+                    checkoutToken: session.checkoutToken,
+                    recoveryToken: session.recoveryToken,
+                    customerName: String(
+                        values.get("customerName") ?? "",
+                    ).trim(),
+                    customerPhone: String(
+                        values.get("customerPhone") ?? "",
+                    ).trim(),
+                    customerEmail: String(
+                        values.get("customerEmail") ?? "",
+                    ).trim(),
+                    postalCode: String(
+                        values.get("postalCode") ?? "",
+                    ).trim(),
+                    addressLine1: String(
+                        values.get("addressLine1") ?? "",
+                    ).trim(),
+                    addressLine2: String(
+                        values.get("addressLine2") ?? "",
+                    ).trim(),
+                    deliveryNote: String(
+                        values.get("deliveryNote") ?? "",
+                    ).trim(),
+                    productIds,
+                });
 
-                        headers: {
-                            "Content-Type": "application/json",
-                            apikey: JANG_LONG_SUPABASE_PUBLISHABLE_KEY,
-                        },
-
-                        cache: "no-store",
-
-                        body: JSON.stringify({
-                            checkoutToken: checkoutSession.checkoutToken,
-
-                            recoveryToken: checkoutSession.recoveryToken,
-
-                            customerName: String(
-                                formData.get("customerName") ?? "",
-                            ).trim(),
-
-                            customerPhone: String(
-                                formData.get("customerPhone") ?? "",
-                            ).trim(),
-
-                            customerEmail: String(
-                                formData.get("customerEmail") ?? "",
-                            ).trim(),
-
-                            postalCode: String(
-                                formData.get("postalCode") ?? "",
-                            ).trim(),
-
-                            addressLine1: String(
-                                formData.get("addressLine1") ?? "",
-                            ).trim(),
-
-                            addressLine2: String(
-                                formData.get("addressLine2") ?? "",
-                            ).trim(),
-
-                            deliveryNote: String(
-                                formData.get("deliveryNote") ?? "",
-                            ).trim(),
-
-                            productIds,
-                        }),
-                    },
-                );
-
-                const payload = await response
-                    .json()
-                    .catch(() => ({}));
-
-                if (!response.ok) {
-                    const errorCode = getErrorCode(payload);
-
-                    throw Object.assign(
-                        new Error(errorCode),
-                        { code: errorCode },
-                    );
-                }
-
-                const order = extractOrder(payload);
-
-                const orderId = getOrderValue(
-                    order,
-                    "order_id",
-                    "orderId",
-                );
-
-                const orderNumber = getOrderValue(
-                    order,
-                    "order_number",
-                    "orderNumber",
-                );
-
-                const expiresAt = getOrderValue(
+                const expiresAt = orderValue(
                     order,
                     "reservation_expires_at",
                     "reservationExpiresAt",
                 );
 
-                if (!orderId || !expiresAt) {
-                    throw Object.assign(
-                        new Error(
-                            "INVALID_CHECKOUT_RESPONSE",
-                        ),
-                        {
-                            code: "INVALID_CHECKOUT_RESPONSE",
-                        },
-                    );
-                }
-
-                checkoutSession.orderId = orderId;
-
-                checkoutSession.orderNumber = orderNumber;
-
-                checkoutSession.expiresAt = expiresAt;
-
-                saveCheckoutSession(
-                    checkoutSession,
-                );
-
-                const shippingFee = Number(
-                    getOrderValue(
+                saveSession({
+                    ...session,
+                    orderId: orderValue(order, "order_id", "orderId"),
+                    orderNumber: orderValue(
                         order,
-                        "shipping_fee",
-                        "shippingFee",
+                        "order_number",
+                        "orderNumber",
                     ),
-                );
+                    expiresAt,
+                });
 
-                const totalAmount = Number(
-                    getOrderValue(
-                        order,
-                        "total_amount",
-                        "totalAmount",
-                    ),
-                );
-
-                if (
-                    shippingElement &&
-                    Number.isFinite(shippingFee)
-                ) {
-                    shippingElement.textContent = formatCheckoutPrice(
-                        shippingFee,
-                    );
-                }
-
-                if (
-                    totalElement &&
-                    Number.isFinite(totalAmount)
-                ) {
-                    totalElement.textContent = formatCheckoutPrice(
-                        totalAmount,
-                    );
-                }
+                updatePrice(order);
 
                 showPaymentMessage(
-                    `상품 예약이 시작되었습니다. 주문번호: ${
-                        orderNumber ?? orderId
+                    `상품 예약이 시작되었습니다. 주문번호: ${orderValue(
+                        order,
+                        "order_number",
+                        "orderNumber",
+                    ) ??
+                    orderValue(order, "order_id", "orderId")
                     }`,
                 );
 
@@ -370,34 +562,43 @@
             } catch (error) {
                 console.error(error);
 
-                paymentButton.disabled = false;
-                editButton.disabled = false;
+                const noReservationErrorCodes = [
+                    "CHECKOUT_PRODUCTS_UNAVAILABLE",
+                    "EMPTY_CART",
+                    "INVALID_PRODUCT_ID",
+                    "DUPLICATE_PRODUCT_ID",
+                    "INVALID_REQUEST",
+                    "INVALID_CHECKOUT_TOKEN",
+                    "FORBIDDEN_CHECKOUT_FIELD",
+                ];
 
-                paymentButton.textContent = ORIGINAL_BUTTON_TEXT;
+                if (noReservationErrorCodes.includes(error.code)) {
+                    clearSession();
+
+                    paymentButton.disabled = false;
+                    editButton.disabled = false;
+                    paymentButton.textContent = START_LABEL;
+
+                    showPaymentMessage(customerMessage(error.code));
+
+                    return;
+                }
+
+                setRecoveryInProgress(true);
 
                 showPaymentMessage(
-                    `${getCustomerMessage(error.code)} [${
-                        error.code ?? error.message ?? "UNKNOWN"
-                    }]`,
+                    "예약 상태를 확인하고 있습니다. 잠시만 기다려주세요.",
                 );
+
+                await resumeReservation(session);
             }
         },
     );
 
-    const savedSession = readCheckoutSession();
+    const savedSession = readSession();
 
-    if (
-        savedSession?.expiresAt &&
-        Date.parse(savedSession.expiresAt) > Date.now()
-    ) {
-        showPaymentMessage(
-            `진행 중인 상품 예약이 있습니다. 주문번호: ${
-                savedSession.orderNumber ?? savedSession.orderId
-            }`,
-        );
-
-        startCountdown(
-            savedSession.expiresAt,
-        );
+    if (savedSession) {
+        setRecoveryInProgress(true);
+        resumeReservation(savedSession);
     }
 })();
