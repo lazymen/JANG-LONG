@@ -16,6 +16,19 @@ const cartCheckoutMessage =
 const checkoutButton =
     document.getElementById("checkout-button");
 
+const RESERVATION_SESSION_KEY =
+    "janglong-guest-checkout-reservation-v1";
+
+const TOKEN_PATTERN = /^[0-9a-f]{64}$/i;
+
+const PRODUCT_ID_PATTERN = /^[0-9]{4}$/;
+
+const UNAVAILABLE_CHECKOUT_MESSAGE =
+    "구매할 수 없는 상품이 포함되어 있습니다. 해당 상품을 삭제한 뒤 다시 진행해주세요.";
+
+const RESERVATION_RETURN_MESSAGE =
+    "예약이 진행 중입니다. 예약 화면으로 돌아가 남은 시간을 확인해주세요.";
+
 
 function escapeCartHtml(value) {
 
@@ -29,6 +42,47 @@ function escapeCartHtml(value) {
             "'": "&#039;"
         })[character]
     );
+
+}
+
+function getMatchingReservationSession(cartIds) {
+
+    const productIds = [...new Set(cartIds)]
+
+        .filter(productId =>
+            PRODUCT_ID_PATTERN.test(productId)
+        );
+
+    const signature =
+        JSON.stringify(productIds.sort());
+
+    try {
+
+        const session = JSON.parse(
+            localStorage.getItem(
+                RESERVATION_SESSION_KEY
+            )
+        );
+
+        const isValidSession =
+            session &&
+            typeof session === "object" &&
+            typeof session.cartSignature === "string" &&
+            session.cartSignature === signature &&
+            typeof session.checkoutToken === "string" &&
+            TOKEN_PATTERN.test(session.checkoutToken) &&
+            typeof session.recoveryToken === "string" &&
+            TOKEN_PATTERN.test(session.recoveryToken);
+
+        return isValidSession
+            ? session
+            : null;
+
+    } catch {
+
+        return null;
+
+    }
 
 }
 
@@ -139,6 +193,15 @@ function renderCart(products) {
     const hasUnavailableProducts =
         availableProducts.length !== cartProducts.length;
 
+    const reservationSession =
+        getMatchingReservationSession(cartIds);
+
+    const canReturnToReservation =
+        Boolean(reservationSession) &&
+        cartProducts.every(product =>
+            product.status === "reserved"
+        );
+
 
     const total = availableProducts
         .reduce(
@@ -152,12 +215,34 @@ function renderCart(products) {
         `₩ ${total.toLocaleString()}`;
 
 
-    checkoutButton.disabled =
-        availableProducts.length === 0 ||
-        hasUnavailableProducts;
+    if (canReturnToReservation) {
 
-    cartCheckoutMessage.hidden =
-        !hasUnavailableProducts;
+        checkoutButton.disabled = false;
+        
+        checkoutButton.textContent =
+            "RETURN TO RESERVATION";
+
+        cartCheckoutMessage.textContent =
+            RESERVATION_RETURN_MESSAGE;
+
+        cartCheckoutMessage.hidden = false;
+
+    } else {
+
+        checkoutButton.disabled =
+            availableProducts.length === 0 ||
+            hasUnavailableProducts;
+
+        checkoutButton.textContent =
+            "CHECKOUT";
+
+        cartCheckoutMessage.textContent =
+            UNAVAILABLE_CHECKOUT_MESSAGE;
+
+        cartCheckoutMessage.hidden =
+            !hasUnavailableProducts;
+
+    }
 
 
     document

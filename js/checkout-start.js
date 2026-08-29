@@ -558,6 +558,7 @@
                     }`,
                 );
 
+                showRecoveredReservation(order);
                 startCountdown(expiresAt);
             } catch (error) {
                 console.error(error);
