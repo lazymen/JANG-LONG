@@ -1182,6 +1182,7 @@ body.search-page .search-query {
 
 .checkout-form-group h3,
 .checkout-review h3,
+.checkout-active-reservation h3,
 .checkout-order-section>h3 {
     margin-bottom: 30px;
     font-size: 11px;
@@ -1998,7 +1999,7 @@ MOBILE SEARCH
         font-size: 8px;
     }
 
-/* =======================================
+    /* =======================================
              MOBILE checkout
 ======================================= */
 

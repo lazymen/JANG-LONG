@@ -150,8 +150,8 @@ function getProductStatusLabel(product) {
 function isReservedByThisTab(product) {
     return Boolean(
         activeReservation &&
-            getRemainingReservationMilliseconds() > 0 &&
-            activeReservation.productIds.includes(product.id),
+        getRemainingReservationMilliseconds() > 0 &&
+        activeReservation.productIds.includes(product.id),
     );
 }
 
@@ -222,9 +222,8 @@ function renderReservationButton() {
     if (activeReservation && remainingMilliseconds > 0) {
         checkoutPaymentButton.disabled = true;
         checkoutPaymentButton.dataset.reservationActive = "true";
-        checkoutPaymentButton.textContent = `RESERVED ${
-            formatRemainingTime(remainingMilliseconds)
-        }`;
+        checkoutPaymentButton.textContent = `RESERVED ${formatRemainingTime(remainingMilliseconds)
+            }`;
 
         reservationTimerId = setInterval(() => {
             const remaining = getRemainingReservationMilliseconds();
@@ -243,9 +242,8 @@ function renderReservationButton() {
                 return;
             }
 
-            checkoutPaymentButton.textContent = `RESERVED ${
-                formatRemainingTime(remaining)
-            }`;
+            checkoutPaymentButton.textContent = `RESERVED ${formatRemainingTime(remaining)
+                }`;
         }, 1000);
 
         return;
@@ -265,6 +263,9 @@ function renderReservationButton() {
 }
 
 function renderCheckout(products) {
+    if (window.jangLongReservationRecoveryInProgress) {
+        return;
+    }
     const storedCartIds = getCart();
 
     const loadedProductIds = new Set(
@@ -308,9 +309,8 @@ function renderCheckout(products) {
             const safeProductSize = escapeCheckoutHtml(product.size || "-");
 
             return `
-                <article class="checkout-order-item ${
-                statusLabel ? "unavailable" : ""
-            }">
+                <article class="checkout-order-item ${statusLabel ? "unavailable" : ""
+                }">
                     <img
                         src="images/products/${product.id}/main.jpg"
                         alt="${safeProductName}"
@@ -323,11 +323,10 @@ function renderCheckout(products) {
 
                         <p>${safeProductSize}</p>
 
-                        ${
-                statusLabel
+                        ${statusLabel
                     ? `<p class="checkout-order-status">${statusLabel}</p>`
                     : ""
-            }
+                }
                     </div>
 
                     <p>${formatPrice(product.price)}</p>
@@ -389,7 +388,7 @@ async function callCheckoutFunction(reservation) {
         throw new CheckoutRequestError(
             payload?.code || payload?.error?.code || "CHECKOUT_START_FAILED",
             payload?.message ||
-                "상품 예약을 시작하지 못했습니다.",
+            "상품 예약을 시작하지 못했습니다.",
         );
     }
 
@@ -597,6 +596,9 @@ async function initialiseCheckout() {
         }
     } catch (error) {
         console.error(error);
+        if (window.jangLongReservationRecoveryInProgress) {
+            return;
+        }
 
         checkoutLoading.hidden = true;
         checkoutError.hidden = false;

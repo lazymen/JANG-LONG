@@ -423,3 +423,9 @@ entrypoint = "./functions/start-guest-checkout/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/start-guest-checkout/*.html" ]
+
+[functions.resume-guest-checkout]
+enabled = true
+verify_jwt = false
+import_map = "./functions/resume-guest-checkout/deno.json"
+entrypoint = "./functions/resume-guest-checkout/index.ts"
