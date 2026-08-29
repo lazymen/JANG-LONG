@@ -691,7 +691,7 @@
                 startCountdown(expiresAt);
             } catch (error) {
                 console.error(error);
-
+                
                 const noReservationErrorCodes = [
                     "CHECKOUT_PRODUCTS_UNAVAILABLE",
                     "EMPTY_CART",
