@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ORDER LOOKUP | JANG LONG</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="order-page">
+    <div class="container">
+        <header>
+            <h1 class="logo">
+                <a href="index.html">JANG LONG</a>
+            </h1>
+
+            <p class="tagline">
+                Living Killed The Dream
+            </p>
+        </header>
+
+        <div class="utility-nav">
+            <a href="cart.html" class="cart-entry">
+                CART (<span id="cart-count">0</span>)
+            </a>
+
+            <a href="order.html" class="order-entry">ORDER</a>
+
+            <button type="button" class="search-entry" id="search-entry">
+                SEARCH
+            </button>
+        </div>
+
+        <div class="search-panel" id="search-panel">
+            <form id="site-search-form" class="search-form">
+                <input type="search" id="site-search-input" autocomplete="off">
+
+                <button type="submit">
+                    GO
+                </button>
+            </form>
+        </div>
+
+        <nav class="mobile-nav">
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                MENU
+            </button>
+
+            <div class="mobile-menu-list" id="mobile-menu-list">
+                <a href="index.html">HOME</a>
+                <a href="shop.html">SHOP</a>
+
+                <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
+                    BLOG
+                </a>
+
+                <a href="about.html">ABOUT</a>
+            </div>
+        </nav>
+
+        <nav class="sidebar">
+            <a href="index.html">HOME</a>
+            <a href="shop.html">SHOP</a>
+
+            <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
+                BLOG
+            </a>
+
+            <a href="about.html">ABOUT</a>
+        </nav>
+
+        <main class="order-main">
+            <h2 class="order-title">
+                ORDER LOOKUP
+            </h2>
+
+            <section class="order-lookup-section">
+                <div id="order-lookup-panel">
+                    <p class="order-lookup-description">
+                        주문번호와 주문 시 사용한 이메일을 입력해주세요.
+                    </p>
+
+                    <form id="order-lookup-form" class="order-lookup-form">
+                        <label class="order-lookup-field" for="order-number">
+                            <span>ORDER NUMBER *</span>
+
+                            <input id="order-number" name="orderNumber" type="text" autocomplete="off" maxlength="100"
+                                spellcheck="false" required>
+                        </label>
+
+                        <label class="order-lookup-field" for="order-email">
+                            <span>EMAIL *</span>
+
+                            <input id="order-email" name="email" type="email" autocomplete="email" maxlength="254"
+                                required>
+                        </label>
+
+                        <button id="order-lookup-button" class="order-lookup-button" type="submit">
+                            FIND ORDER
+                        </button>
+
+                        <p id="order-lookup-message" class="order-lookup-message" aria-live="polite" hidden>
+                        </p>
+                    </form>
+                </div>
+
+                <section id="order-result" class="order-result" hidden>
+                    <div class="order-result-heading">
+                        <h3>ORDER</h3>
+
+                        <button id="order-lookup-again" class="order-lookup-again" type="button">
+                            LOOK UP ANOTHER ORDER
+                        </button>
+                    </div>
+
+                    <dl class="order-summary">
+                        <div>
+                            <dt>ORDER NUMBER</dt>
+                            <dd id="order-result-number"></dd>
+                        </div>
+
+                        <div>
+                            <dt>ORDER DATE</dt>
+                            <dd id="order-result-date"></dd>
+                        </div>
+
+                        <div>
+                            <dt>ORDER STATUS</dt>
+                            <dd id="order-result-status"></dd>
+                        </div>
+
+                        <div>
+                            <dt>SHIPPING STATUS</dt>
+                            <dd id="order-result-shipping-status"></dd>
+                        </div>
+                    </dl>
+
+                    <section class="order-result-section">
+                        <h3>ITEMS</h3>
+
+                        <div id="order-result-items" class="order-result-items">
+                        </div>
+                    </section>
+
+                    <section class="order-result-section">
+                        <h3>PAYMENT</h3>
+
+                        <dl class="order-result-pricing">
+                            <div>
+                                <dt>SUBTOTAL</dt>
+                                <dd id="order-result-subtotal"></dd>
+                            </div>
+
+                            <div>
+                                <dt>SHIPPING</dt>
+                                <dd id="order-result-shipping-fee"></dd>
+                            </div>
+
+                            <div class="order-result-total">
+                                <dt>TOTAL</dt>
+                                <dd id="order-result-total"></dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <section class="order-result-section">
+                        <h3>SHIPPING INFORMATION</h3>
+
+                        <dl class="order-shipping-information">
+                            <div>
+                                <dt>RECIPIENT</dt>
+                                <dd id="order-result-recipient"></dd>
+                            </div>
+
+                            <div>
+                                <dt>ADDRESS</dt>
+                                <dd id="order-result-address"></dd>
+                            </div>
+
+                            <div>
+                                <dt>DELIVERY NOTE</dt>
+                                <dd id="order-result-delivery-note"></dd>
+                            </div>
+
+                            <div>
+                                <dt>CARRIER</dt>
+                                <dd id="order-result-carrier"></dd>
+                            </div>
+
+                            <div>
+                                <dt>TRACKING NUMBER</dt>
+                                <dd id="order-result-tracking-number"></dd>
+                            </div>
+                        </dl>
+                    </section>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/cart-store.js"></script>
+    <script src="js/cart-ui.js"></script>
+    <script src="js/products-data.js"></script>
+
+    <script src="js/order-lookup.js"></script>
+
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/search-toggle.js"></script>
+</body>
+
+</html>
