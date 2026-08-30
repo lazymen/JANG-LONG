@@ -24,6 +24,11 @@
     const resultNumber = document.getElementById(
         "order-result-number",
     );
+
+    const copyOrderNumberButton = document.getElementById(
+        "order-result-number-copy",
+    );
+
     const resultDate = document.getElementById(
         "order-result-date",
     );
@@ -257,7 +262,7 @@
         const calculatedTotal =
             totals.totalAmount ??
             Number(totals.subtotal || 0) +
-                Number(totals.shippingFee || 0);
+            Number(totals.shippingFee || 0);
 
         setText(
             resultTotal,
@@ -363,6 +368,34 @@
             lookupButton.textContent = "FIND ORDER";
         }
     });
+
+    copyOrderNumberButton?.addEventListener(
+        "click",
+        async () => {
+            const orderNumber =
+                resultNumber?.textContent?.trim() || "";
+
+            if (!orderNumber || orderNumber === "—") {
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(orderNumber);
+
+                copyOrderNumberButton.textContent = "COPIED";
+
+                window.setTimeout(() => {
+                    copyOrderNumberButton.textContent = "COPY";
+                }, 1500);
+            } catch {
+                copyOrderNumberButton.textContent = "TRY AGAIN";
+
+                window.setTimeout(() => {
+                    copyOrderNumberButton.textContent = "COPY";
+                }, 1500);
+            }
+        },
+    );
 
     lookupAgainButton.addEventListener("click", () => {
         result.hidden = true;

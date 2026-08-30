@@ -363,6 +363,42 @@
             orderValue(order, "order_number", "orderNumber") ??
             orderValue(order, "order_id", "orderId");
 
+        const copyOrderButton = document.createElement("button");
+
+        copyOrderButton.type = "button";
+        copyOrderButton.className = "checkout-copy-order-button";
+        copyOrderButton.textContent = "COPY";
+        copyOrderButton.setAttribute("aria-label", "Copy order number");
+
+        activeOrderNumber.insertAdjacentElement(
+            "afterend",
+            copyOrderButton
+        );
+
+        copyOrderButton.addEventListener("click", async () => {
+            const orderNumber = activeOrderNumber.textContent.trim();
+
+            if (!orderNumber || orderNumber === "—") {
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(orderNumber);
+
+                copyOrderButton.textContent = "COPIED";
+
+                window.setTimeout(() => {
+                    copyOrderButton.textContent = "COPY";
+                }, 1500);
+            } catch {
+                copyOrderButton.textContent = "TRY AGAIN";
+
+                window.setTimeout(() => {
+                    copyOrderButton.textContent = "COPY";
+                }, 1500);
+            }
+        });
+
         renderOrderItems(order);
         updatePrice(order);
     }
@@ -691,7 +727,7 @@
                 startCountdown(expiresAt);
             } catch (error) {
                 console.error(error);
-                
+
                 const noReservationErrorCodes = [
                     "CHECKOUT_PRODUCTS_UNAVAILABLE",
                     "EMPTY_CART",
