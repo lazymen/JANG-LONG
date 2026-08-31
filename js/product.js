@@ -47,7 +47,7 @@ loadProducts()
 
         }
 
-        mainImage.src = `images/products/${product.id}/main.jpg`;
+        mainImage.src = getProductMainImageUrl(product);
         mainImage.alt = product.name;
         function updateAddToCartButton() {
 
@@ -147,15 +147,19 @@ loadProducts()
         // 상세 이미지 출력
         product.images.forEach(image => {
 
-            if (image === "main.jpg") return;
+            if (
+                String(image)
+                    .split("/")
+                    .pop()
+                    ?.toLowerCase() === "main.jpg"
+            ) return;
 
             detailGallery.innerHTML += `
-
-                <img
-                    src="images/products/${product.id}/${image}"
-                    alt="${product.name}">
-
-            `;
+        <img
+            src="${getProductImageUrl(product.id, image)}"
+            alt="${product.name}"
+        >
+    `;
 
         });
 

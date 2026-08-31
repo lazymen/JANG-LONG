@@ -124,7 +124,7 @@ function renderCheckout(products) {
                 <article class="checkout-order-item ${statusLabel ? "unavailable" : ""
                 }">
                     <img
-                        src="images/products/${product.id}/main.jpg"
+                        src="${getProductMainImageUrl(product)}"
                         alt="${safeProductName}"
                     >
 

@@ -191,7 +191,7 @@
                 const image = document.createElement("img");
 
                 image.className = "order-result-item-image";
-                image.src = item.imagePath;
+                image.src = getStoredProductImageUrl(item.imagePath);
                 image.alt = item.productName || "ORDER ITEM";
                 image.loading = "lazy";
 

@@ -10,7 +10,7 @@ function createProductCard(product) {
             <div class="product-image-wrapper">
 
                 <img
-                    src="images/products/${product.id}/main.jpg"
+                    src="${getProductMainImageUrl(product)}"
                     alt="${product.name}"
                 >
 

@@ -144,7 +144,7 @@ function renderCart(products) {
                     >
 
                         <img
-                            src="images/products/${product.id}/main.jpg"
+                           src="${getProductMainImageUrl(product)}"
                             alt="${safeProductName}"
                         >
 
@@ -218,7 +218,7 @@ function renderCart(products) {
     if (canReturnToReservation) {
 
         checkoutButton.disabled = false;
-        
+
         checkoutButton.textContent =
             "RETURN TO RESERVATION";
 
