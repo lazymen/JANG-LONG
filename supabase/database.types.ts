@@ -355,6 +355,21 @@ export type Database = {
           released_product_count: number
         }[]
       }
+      cleanup_order_lookup_rate_limits: {
+        Args: { p_retention_days?: number }
+        Returns: number
+      }
+      consume_order_lookup_rate_limit: {
+        Args: {
+          p_limit?: number
+          p_rate_key: string
+          p_window_seconds?: number
+        }
+        Returns: {
+          is_allowed: boolean
+          retry_after_seconds: number
+        }[]
+      }
       expire_guest_checkouts: {
         Args: { p_batch_size?: number }
         Returns: {

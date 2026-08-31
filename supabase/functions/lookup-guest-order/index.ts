@@ -10,6 +10,7 @@ class OrderLookupError extends Error {
     readonly status: number,
     readonly code: string,
     readonly publicMessage: string,
+    readonly retryAfterSeconds: number | null = null,
   ) {
     super(code);
   }
@@ -17,15 +18,21 @@ class OrderLookupError extends Error {
 
 const ORDER_NUMBER_PATTERN = /^[A-Z0-9]+(?:-[A-Z0-9]+)+$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RATE_LIMIT_SECRET_NAME = "ORDER_LOOKUP_RATE_LIMIT_SECRET";
+const RATE_LIMIT_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_SECONDS = 600;
+const MINIMUM_SECRET_LENGTH = 32;
 
 function jsonResponse(
   body: Record<string, unknown>,
   status = 200,
+  additionalHeaders: Record<string, string> = {},
 ): Response {
   return Response.json(body, {
     status,
     headers: {
       "Cache-Control": "no-store",
+      ...additionalHeaders,
     },
   });
 }
@@ -101,6 +108,148 @@ function notFoundError(): OrderLookupError {
   );
 }
 
+function readClientIp(request: Request): string {
+  const clientIp = (
+    request.headers.get("cf-connecting-ip") ??
+    request.headers.get("x-real-ip") ??
+    ""
+  ).trim();
+
+  if (
+    !clientIp ||
+    clientIp.length > 64 ||
+    clientIp.includes(",") ||
+    /\s/.test(clientIp)
+  ) {
+    throw new OrderLookupError(
+      503,
+      "RATE_LIMIT_UNAVAILABLE",
+      "주문조회 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+    );
+  }
+
+  return clientIp;
+}
+
+async function createRateKey(clientIp: string): Promise<string> {
+  const secret = Deno.env.get(RATE_LIMIT_SECRET_NAME) ?? "";
+
+  if (secret.length < MINIMUM_SECRET_LENGTH) {
+    console.error("guest order lookup rate limit unavailable", {
+      reason: "missing_or_short_secret",
+    });
+
+    throw new OrderLookupError(
+      503,
+      "RATE_LIMIT_UNAVAILABLE",
+      "주문조회 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+    );
+  }
+
+  const encoder = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    {
+      name: "HMAC",
+      hash: "SHA-256",
+    },
+    false,
+    ["sign"],
+  );
+
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    cryptoKey,
+    encoder.encode(clientIp),
+  );
+
+  return Array.from(new Uint8Array(signature))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function formatRetryAfter(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes > 0 && remainingSeconds > 0) {
+    return `${minutes}분 ${remainingSeconds}초`;
+  }
+
+  if (minutes > 0) {
+    return `${minutes}분`;
+  }
+
+  return `${remainingSeconds}초`;
+}
+
+async function enforceRateLimit(
+  request: Request,
+  supabaseAdmin: SupabaseClient<Database>,
+): Promise<void> {
+  const clientIp = readClientIp(request);
+  const rateKey = await createRateKey(clientIp);
+
+  const { data, error } = await supabaseAdmin.rpc(
+    "consume_order_lookup_rate_limit",
+    {
+      p_rate_key: rateKey,
+      p_limit: RATE_LIMIT_REQUESTS,
+      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+    },
+  );
+
+  if (error) {
+    console.error("guest order lookup rate limit failed", {
+      databaseCode: error.code,
+    });
+
+    throw new OrderLookupError(
+      503,
+      "RATE_LIMIT_UNAVAILABLE",
+      "주문조회 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+    );
+  }
+
+  const rateLimit = data?.[0];
+
+  if (
+    !rateLimit ||
+    typeof rateLimit.is_allowed !== "boolean" ||
+    typeof rateLimit.retry_after_seconds !== "number"
+  ) {
+    console.error("guest order lookup rate limit failed", {
+      reason: "invalid_database_response",
+    });
+
+    throw new OrderLookupError(
+      503,
+      "RATE_LIMIT_UNAVAILABLE",
+      "주문조회 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+    );
+  }
+
+  if (rateLimit.is_allowed) {
+    return;
+  }
+
+  const retryAfterSeconds = Math.max(
+    1,
+    Math.min(
+      RATE_LIMIT_WINDOW_SECONDS,
+      Math.ceil(rateLimit.retry_after_seconds),
+    ),
+  );
+
+  throw new OrderLookupError(
+    429,
+    "TOO_MANY_REQUESTS",
+    `요청이 너무 많습니다. ${formatRetryAfter(retryAfterSeconds)} 후 다시 시도해주세요.`,
+    retryAfterSeconds,
+  );
+}
+
 export default {
   fetch: withSupabase(
     { auth: ["publishable"] },
@@ -113,6 +262,11 @@ export default {
             "지원하지 않는 요청입니다.",
           );
         }
+
+        const supabaseAdmin =
+          context.supabaseAdmin as SupabaseClient<Database>;
+
+        await enforceRateLimit(request, supabaseAdmin);
 
         let body: unknown;
 
@@ -136,9 +290,6 @@ export default {
 
         const orderNumber = readOrderNumber(body);
         const email = readEmail(body);
-
-        const supabaseAdmin =
-          context.supabaseAdmin as SupabaseClient<Database>;
 
         const { data: order, error: orderError } =
           await supabaseAdmin
@@ -253,15 +404,26 @@ export default {
         });
       } catch (error) {
         if (error instanceof OrderLookupError) {
+          const errorBody: Record<string, unknown> = {
+            code: error.code,
+            message: error.publicMessage,
+          };
+          const responseHeaders: Record<string, string> = {};
+
+          if (error.retryAfterSeconds !== null) {
+            errorBody.retryAfterSeconds = error.retryAfterSeconds;
+            responseHeaders["Retry-After"] = String(
+              error.retryAfterSeconds,
+            );
+          }
+
           return jsonResponse(
             {
               ok: false,
-              error: {
-                code: error.code,
-                message: error.publicMessage,
-              },
+              error: errorBody,
             },
             error.status,
+            responseHeaders,
           );
         }
 
