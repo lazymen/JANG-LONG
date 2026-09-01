@@ -306,17 +306,17 @@
                     orderValue(item, "image_path", "imagePath") ?? "",
                 );
 
-                const safeImagePath =
-                    /^images\/products\/[0-9]{4}\/[A-Za-z0-9._-]+$/.test(
-                        imagePath,
-                    )
-                        ? imagePath
-                        : `images/products/${productId}/main.jpg`;
+                const safeImageUrl =
+                    getStoredProductImageUrl(imagePath) ||
+                    getProductImageUrl(
+                        productId,
+                        `${productId}/main.jpg`,
+                    );
 
                 return `
                     <article class="checkout-order-item">
                         <img
-                            src="${escapeHtml(safeImagePath)}"
+                            src="${escapeHtml(safeImageUrl)}"
                             alt="${escapeHtml(name)}"
                         >
 
