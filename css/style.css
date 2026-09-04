@@ -1599,7 +1599,8 @@ body.search-page .search-query {
     body.search-page .mobile-nav,
     body.product-page .mobile-nav,
     body.cart-page .mobile-nav,
-    body.order-page .mobile-nav {
+    body.order-page .mobile-nav,
+    body.guide-page .mobile-nav {
         position: relative;
         width: 100%;
         padding: 20px;
@@ -2039,5 +2040,64 @@ body.search-page .search-query {
         .utility-nav .order-entry {
         font-size: 8px;
         line-height: normal;
+    }
+}
+
+/* =======================================
+   GUIDE
+======================================= */
+
+.guide-main {
+    width: min(720px, calc(100% - 56px));
+    margin: 150px auto 120px;
+}
+
+.guide-title {
+    margin: 0 0 46px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.guide-section {
+    max-width: 640px;
+}
+
+.guide-section + .guide-section {
+    margin-top: 56px;
+    padding-top: 34px;
+
+    border-top: 1px solid #ddd;
+}
+
+.guide-section h3 {
+    margin: 0 0 22px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.guide-section p {
+    margin: 0 0 12px;
+
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+@media (max-width: 768px) {
+    .guide-main {
+        width: auto;
+        margin: 70px 16px 100px;
+    }
+
+    .guide-title {
+        margin-bottom: 35px;
+    }
+
+    .guide-section + .guide-section {
+        margin-top: 44px;
+        padding-top: 28px;
     }
 }

@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CART | JANG LONG</title>
+    <title>GUIDE | JANG LONG</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="cart-page">
+<body class="guide-page">
 
     <div class="container">
 
@@ -26,7 +26,6 @@
 
         </header>
 
-
         <div class="utility-nav">
 
             <a href="cart.html" class="cart-entry">
@@ -41,12 +40,11 @@
 
         </div>
 
-
         <div class="search-panel" id="search-panel">
 
             <form id="site-search-form" class="search-form">
 
-                <input type="search" id="site-search-input" autocomplete="off">
+                <input type="search" id="site-search-input" placeholder="SEARCH" autocomplete="off">
 
                 <button type="submit">
                     GO
@@ -55,7 +53,6 @@
             </form>
 
         </div>
-
 
         <nav class="mobile-nav">
 
@@ -67,90 +64,66 @@
 
                 <a href="index.html">HOME</a>
                 <a href="shop.html">SHOP</a>
-
-                <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
-                    BLOG
-                </a>
-
-                <a href="about.html">
-                    ABOUT
-                </a>
-
-                <a href="guide.html">GUIDE</a>
+                <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">BLOG</a>
+                <a href="about.html">ABOUT</a>
+<a href="guide.html">GUIDE</a>
 
             </div>
 
         </nav>
-
 
         <nav class="sidebar">
-
             <a href="index.html">HOME</a>
             <a href="shop.html">SHOP</a>
-
-            <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank" rel="noopener">
-                BLOG
-            </a>
-
+            <a href="https://blog.naver.com/lazy-vintage-luv" target="_blank">BLOG</a>
             <a href="about.html">ABOUT</a>
-            <a href="guide.html">GUIDE</a>
-
+<a href="guide.html">GUIDE</a>
         </nav>
 
+        <main class="guide-main">
 
-        <main class="cart-main">
+            <h2 class="guide-title">GUIDE</h2>
 
-            <h2 class="cart-title">
-                CART
-            </h2>
+            <section class="guide-section">
 
+                <h3>VINTAGE NOTICE</h3>
 
-            <div id="cart-list" class="cart-list"></div>
-
-
-            <p id="cart-empty" class="cart-empty">
-                YOUR CART IS EMPTY.
-            </p>
-
-
-            <div id="cart-summary" class="cart-summary">
-
-                <div class="cart-total">
-
-                    <span>
-                        TOTAL
-                    </span>
-
-                    <span id="cart-total">
-                        ₩ 0
-                    </span>
-
-                </div>
-
-
-                <p id="cart-checkout-message" class="cart-checkout-message" hidden>
-                    구매할 수 없는 상품이 포함되어 있습니다. 해당 상품을 삭제한 뒤 다시 진행해주세요.
+                <p>
+                    JANG LONG의 모든 상품은 빈티지 특성상 사용감, 마모,
+                    변색, 수선 흔적 등이 있을 수 있습니다.
                 </p>
 
+                <p>
+                    확인된 상태는 NOTES와 상세 사진에 기재합니다.
+                </p>
 
-                <button type="button" class="checkout-button" id="checkout-button" disabled>
-                    CHECKOUT
-                </button>
+                <p>
+                    검수 과정에서 포착되지 않은 미세한 사용감이 남아 있을 수
+                    있으므로, 구매 전 실측과 사진을 충분히 확인해주세요.
+                </p>
 
-            </div>
+            </section>
+
+            <section class="guide-section">
+
+                <h3>MEASUREMENT</h3>
+
+                <p>
+                    측정 위치에 따라 약 ±1~2cm의 차이가 있을 수 있습니다.
+                </p>
+
+                <p>
+                    구매 전 실측 가이드와 상세 사진을 함께 확인해주세요.
+                </p>
+
+            </section>
 
         </main>
 
     </div>
 
-
-    <script src="js/product-status.js"></script>
-    <script src="js/products-data.js"></script>
-
     <script src="js/cart-store.js"></script>
     <script src="js/cart-ui.js"></script>
-    <script src="js/cart-page.js"></script>
-
     <script src="js/mobile-menu.js"></script>
     <script src="js/search-toggle.js"></script>
 
