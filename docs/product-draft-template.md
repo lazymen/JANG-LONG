@@ -50,21 +50,25 @@ measurement (jsonb)
 
 모든 템플릿은 현재 JANG LONG 측정 키를 모두 유지한다. 해당하지 않는 항목은 빈 문자열 ""로 둔다.
 
+실측값은 숫자만 입력한다. 상세 페이지에서 자동으로 cm가 표시된다.
+
+특수한 개체로 일반 기준을 적용할 수 없는 경우, 실제 측정 기준을 NOTES에 기재한다.
+
 상의 · 니트 · 셔츠 · 스웨트 · 아우터
 
-{"shoulder":"[SHOULDER]","chest":"[CHEST]","length":"[LENGTH]","sleeve":"[SLEEVE]","waist":"","rise":"","thigh":"","hem":"[HEM]","inseam":"","width":"","height":"","depth":""}
+측정 기준
 
-하의 · 데님 · 팬츠 · 쇼츠
+- shoulder: 양쪽 어깨와 소매 시접이 만나는 지점 사이
+- chest: 양쪽 겨드랑이, 소매 시접과 몸통이 만나는 지점 사이
+- length: 뒷면 넥 시보리 또는 칼라 시작점의 중앙부터 몸통 밑단까지
+- sleeve: 어깨 시접부터 소매 끝까지
 
-{"shoulder":"","chest":"","length":"","sleeve":"","waist":"[WAIST]","rise":"[RISE]","thigh":"[THIGH]","hem":"[HEM]","inseam":"[INSEAM]","width":"","height":"","depth":""}
+```json
+상의
+{"shoulder":"[SHOULDER]","chest":"[CHEST]","length":"[LENGTH]","sleeve":"[SLEEVE]","waist":"","rise":"","thigh":"","hem":"","inseam":"","width":"","height":"","depth":""}
 
-가방 · 소품
-
-{"shoulder":"","chest":"","length":"","sleeve":"","waist":"","rise":"","thigh":"","hem":"","inseam":"","width":"[WIDTH]","height":"[HEIGHT]","depth":"[DEPTH]"}
-
-실측값을 넣은 하의 예시
-
-{"shoulder":"","chest":"","length":"","sleeve":"","waist":"40","rise":"31","thigh":"32","hem":"22","inseam":"76","width":"","height":"","depth":""}
+하의
+{"shoulder":"","chest":"","length":"[LENGTH]","sleeve":"","waist":"[WAIST]","rise":"[RISE]","thigh":"[THIGH]","hem":"[HEM]","inseam":"","width":"","height":"","depth":""}
 
 저장 전 15초 검수
 
