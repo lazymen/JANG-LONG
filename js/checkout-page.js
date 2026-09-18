@@ -28,9 +28,14 @@ const checkoutOrderList = document.getElementById(
 
 const checkoutSubtotal = document.getElementById("checkout-subtotal");
 
+const checkoutShipping = document.getElementById("checkout-shipping");
+
 const checkoutEstimatedTotal = document.getElementById(
     "checkout-estimated-total",
 );
+
+const CHECKOUT_QUOTE_URL =
+    `${JANG_LONG_SUPABASE_URL}/functions/v1/quote-guest-checkout`;
 
 const CHECKOUT_UNAVAILABLE_MESSAGE =
     "현재 선택하신 상품 중 구매할 수 없는 상품이 있습니다. 장바구니를 다시 확인해주세요.";
@@ -38,10 +43,14 @@ const CHECKOUT_UNAVAILABLE_MESSAGE =
 const CHECKOUT_RECHECK_ERROR_MESSAGE =
     "상품 상태를 다시 확인하지 못했습니다. 잠시 후 다시 시도해주세요.";
 
+const CHECKOUT_QUOTE_ERROR_MESSAGE =
+    "배송비를 계산하지 못했습니다. 우편번호를 확인한 뒤 다시 시도해주세요.";
+
 let checkoutCanReview = false;
+let checkoutSubtotalAmount = 0;
 
 function formatPrice(price) {
-    return `₩ ${price.toLocaleString()}`;
+    return `₩ ${Number(price).toLocaleString()}`;
 }
 
 function escapeCheckoutHtml(value) {
@@ -68,6 +77,66 @@ function getProductStatusLabel(product) {
     }
 
     return "";
+}
+
+function resetShippingPrice() {
+    checkoutShipping.textContent = "ADDRESS REQUIRED";
+
+    checkoutEstimatedTotal.textContent =
+        `${formatPrice(checkoutSubtotalAmount)} + SHIPPING`;
+}
+
+function renderShippingQuote(quote) {
+    const subtotal = Number(quote.subtotal);
+    const shippingFee = Number(quote.shippingFee);
+    const totalAmount = Number(quote.totalAmount);
+
+    if (
+        !Number.isFinite(subtotal) ||
+        !Number.isFinite(shippingFee) ||
+        !Number.isFinite(totalAmount)
+    ) {
+        throw new Error("INVALID_QUOTE_RESPONSE");
+    }
+
+    checkoutSubtotalAmount = subtotal;
+    checkoutSubtotal.textContent = formatPrice(subtotal);
+    checkoutShipping.textContent = formatPrice(shippingFee);
+    checkoutEstimatedTotal.textContent = formatPrice(totalAmount);
+}
+
+async function loadShippingQuote(postalCode, productIds) {
+    const response = await fetch(CHECKOUT_QUOTE_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            apikey: JANG_LONG_SUPABASE_PUBLISHABLE_KEY,
+        },
+        cache: "no-store",
+        body: JSON.stringify({
+            postalCode,
+            productIds,
+        }),
+    });
+
+    const payload = await response
+        .json()
+        .catch(() => ({}));
+
+    if (!response.ok || !payload.quote) {
+        const error = new Error(
+            payload?.error?.message ||
+            CHECKOUT_QUOTE_ERROR_MESSAGE,
+        );
+
+        error.code =
+            payload?.error?.code ||
+            "CHECKOUT_QUOTE_FAILED";
+
+        throw error;
+    }
+
+    return payload.quote;
 }
 
 function renderCheckout(products) {
@@ -121,8 +190,7 @@ function renderCheckout(products) {
             );
 
             return `
-                <article class="checkout-order-item ${statusLabel ? "unavailable" : ""
-                }">
+                <article class="checkout-order-item ${statusLabel ? "unavailable" : ""}">
                     <img
                         src="${getProductMainImageUrl(product)}"
                         alt="${safeProductName}"
@@ -152,10 +220,10 @@ function renderCheckout(products) {
         0,
     );
 
+    checkoutSubtotalAmount = subtotal;
     checkoutSubtotal.textContent = formatPrice(subtotal);
 
-    checkoutEstimatedTotal.textContent =
-        `${formatPrice(subtotal)} + SHIPPING`;
+    resetShippingPrice();
 
     checkoutReviewButton.disabled =
         availableProducts.length === 0 ||
@@ -202,9 +270,7 @@ function showOrderReview() {
     ).trim();
 
     document.getElementById("review-name").textContent = customerName;
-
     document.getElementById("review-phone").textContent = customerPhone;
-
     document.getElementById("review-email").textContent = customerEmail;
 
     document.getElementById("review-address").textContent = [
@@ -244,7 +310,6 @@ checkoutForm.addEventListener(
         }
 
         const originalButtonText = checkoutReviewButton.textContent;
-
         const couldReviewBeforeCheck = checkoutCanReview;
 
         checkoutCanReview = false;
@@ -253,13 +318,25 @@ checkoutForm.addEventListener(
         checkoutStatusMessage.hidden = true;
 
         try {
-            const latestProducts = await loadProductsByIds(getCart());
+            const productIds = [...new Set(getCart())];
+
+            const latestProducts =
+                await loadProductsByIds(productIds);
 
             renderCheckout(latestProducts);
 
             if (!checkoutCanReview) {
                 return;
             }
+
+            const formData = new FormData(checkoutForm);
+
+            const quote = await loadShippingQuote(
+                String(formData.get("postalCode") || "").trim(),
+                productIds,
+            );
+
+            renderShippingQuote(quote);
 
             showOrderReview();
         } catch (error) {
@@ -268,12 +345,12 @@ checkoutForm.addEventListener(
             checkoutCanReview = couldReviewBeforeCheck;
 
             checkoutStatusMessage.textContent =
+                error?.message ||
                 CHECKOUT_RECHECK_ERROR_MESSAGE;
 
             checkoutStatusMessage.hidden = false;
         } finally {
             checkoutReviewButton.textContent = originalButtonText;
-
             checkoutReviewButton.disabled = !checkoutCanReview;
         }
     },
@@ -288,6 +365,8 @@ checkoutEditButton.addEventListener(
         document.getElementById(
             "checkout-payment-button",
         ).disabled = true;
+
+        resetShippingPrice();
 
         checkoutForm.scrollIntoView({
             behavior: "smooth",

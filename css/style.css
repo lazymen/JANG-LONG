@@ -793,6 +793,15 @@ body.search-page .search-query {
     font-size: 12px;
 }
 
+.cart-shipping-notice {
+    margin: 16px 0 0;
+
+    font-size: 9px;
+    line-height: 1.8;
+
+    color: #777;
+}
+
 .checkout-button {
     display: block;
 
